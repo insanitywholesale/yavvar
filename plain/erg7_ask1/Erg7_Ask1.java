@@ -15,7 +15,7 @@ public class Erg7_Ask1 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int n = 5, index = (int)((n-2)*Math.random()), thesimax, thesimin;
+        int n = 10, index = (int)((n-2)*Math.random()), thesimax, thesimin;
         int pin[] = new int[n];
         fillPin(pin);
         showPin(pin);
