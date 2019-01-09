@@ -21,11 +21,15 @@ public class Erg8_Ask1 {
         int avgLine[];
         int avgCol[];
         fillPin(n, m, my2DArray);
+        System.out.println("\nshowpin2d");
         showPin2D(n, m, my2DArray);
         avgLine = findMeanLine(n, m, my2DArray);
-        showPin1D(avgLine);
         avgCol = findMeanCol(n, m, my2DArray);
+        System.out.println("\nshowpin1d avgline");
+        showPin1D(avgLine);
+        System.out.println("\nshowpin1d avgcol");
         showPin1D(avgCol);
+        System.out.println("\ndiagonal sum: " + findDSum(n, m, my2DArray));
     }
     
     
@@ -84,5 +88,28 @@ public class Erg8_Ask1 {
         }
         return pin1d;
     }
+    
+    
+    static int findDSum(int n, int m, int pin2d[][]){
+        int i, j; int diag1=0, diag2=0, diagAdd=0;
+        for ( i=0; i<n; i++ ) {
+            for( j=0; j<m; j++ ) {
+                diag1 += pin2d[i][j];
+            }
+        }
+        for ( i=n; i<n; i++ ) {
+            for( j=(m-1); j>=0; j--) {
+                diag2 += pin2d[i][j];
+            }
+        }
+        if (pin2d[0].length == pin2d.length) {
+            diagAdd = diag1 + diag2;
+        }
+        else {
+            System.out.println("this isn't square!");
+        }
+        return diagAdd;
+    }
+    
     
 }
