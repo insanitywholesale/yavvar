@@ -1,0 +1,69 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package erg10_ask1;
+
+/**
+ *
+ * @author angle
+ */
+public class Ypallhlos {
+    int kodikosEpixeirhshs, arithmosMitrwou, oresYperorias, eidosPtyxiou;
+    double basikosMisthos;
+    
+    Ypallhlos(int kE, int aM, int oY, int eP, double bM) {
+        kodikosEpixeirhshs = kE;
+        arithmosMitrwou = aM;
+        oresYperorias = oY;
+        eidosPtyxiou = eP;
+        basikosMisthos = bM;
+    }
+    
+    void showTelikosMisthos() {
+        int timhYperorias = oresYperorias * 20;
+        int epidomaPtyxiou = 0;
+        double telikosMisthos;
+        
+        switch (epidomaPtyxiou) {
+            case 1: epidomaPtyxiou = 300;
+                break;
+            case 2: epidomaPtyxiou = 150;
+                break;
+            case 3: epidomaPtyxiou = 100;
+                break;
+            case 4: epidomaPtyxiou = 50;
+                break;
+            default: epidomaPtyxiou = 0;
+        }
+        
+        System.out.println("final income amount: " + (telikosMisthos = basikosMisthos + timhYperorias + epidomaPtyxiou) + "\n");
+    }
+    
+    double returnTelikosMisthos() {
+        int timhYperorias = oresYperorias * 20;
+        int epidomaPtyxiou = 0;
+        double telikosMisthos;
+        
+        switch (epidomaPtyxiou) {
+            case 1: epidomaPtyxiou = 300;
+                break;
+            case 2: epidomaPtyxiou = 150;
+                break;
+            case 3: epidomaPtyxiou = 100;
+                break;
+            case 4: epidomaPtyxiou = 50;
+                break;
+            default: epidomaPtyxiou = 0;
+        }
+        
+        return telikosMisthos = basikosMisthos + timhYperorias + epidomaPtyxiou;
+    }
+    
+    public String toString() {
+        String s = "\nbusiness serial number: " + kodikosEpixeirhshs + "\nperson serial number: " + arithmosMitrwou + "\nbase income amount: ";
+        s += basikosMisthos + "\novertime hours: " + oresYperorias + "\ndegree type: " + eidosPtyxiou;
+        return s;
+    }
+}
