@@ -17,7 +17,7 @@ public class scannerUserInput {
 	return -1;
       }
     }
-    
+
     static byte getByte(){
     Scanner ob = new Scanner(System.in);
       try{
@@ -28,7 +28,7 @@ public class scannerUserInput {
 	return -1;
       }
     }
-    
+
     static short getShort(){
     Scanner ob = new Scanner(System.in);
       try{
@@ -39,7 +39,7 @@ public class scannerUserInput {
 	return -1;
       }
     }
-    
+
     static long getLongInteger(){
     Scanner ob = new Scanner(System.in);
       try{
@@ -50,7 +50,7 @@ public class scannerUserInput {
 	return -1;
       }
     }
-    
+
     static float getFloat(){
     Scanner ob = new Scanner(System.in);
       try{
@@ -61,7 +61,7 @@ public class scannerUserInput {
 	return -1;
       }
     }
-    
+
     static double getDouble(){
     Scanner ob = new Scanner(System.in);
       try{
@@ -72,7 +72,7 @@ public class scannerUserInput {
 	return -1;
       }
     }
-    
+
     static String getString(){
     Scanner ob = new Scanner(System.in);
       try{
@@ -83,7 +83,7 @@ public class scannerUserInput {
 	return "";
       }
     }
-    
+
     static char getChar(){
     Scanner ob = new Scanner(System.in);
       try{
@@ -94,5 +94,5 @@ public class scannerUserInput {
 	return ' ';
       }
     }
-    
+
 }
