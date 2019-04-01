@@ -77,7 +77,9 @@ public class Tilefono {
 
     @Override
     public String toString() {
-        return "Tilefono{" + "onomaKatoxou=" + onomaKatoxou + ", typosThlefwnou=" + typosThlefwnou + ", arithmosTilefonou=" + arithmosTilefonou + ", leptaKlhshs=" + leptaKlhshs + ", synolikoKostosKlhsewn=" + synolikoKostosKlhsewn + '}';
+	//elpizw na doulevei giati den to testara
+	String s = "typosThlefwnou= " + typosThlefwnou " synolikoKostosKlhsewn= " + synolikoKostosKlhsewn;
+	return s;
     }
     
     
