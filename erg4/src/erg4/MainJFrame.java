@@ -135,6 +135,7 @@ public class MainJFrame extends javax.swing.JFrame {
         SlBalance.setMajorTickSpacing(2);
         SlBalance.setMaximum(5);
         SlBalance.setMinimum(-5);
+        SlBalance.setMinorTickSpacing(1);
         SlBalance.setPaintLabels(true);
         SlBalance.setPaintTicks(true);
         SlBalance.setValue(0);
@@ -144,6 +145,12 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(SlBalance, gridBagConstraints);
+
+        SlVolume.setMajorTickSpacing(1);
+        SlVolume.setMaximum(10);
+        SlVolume.setPaintLabels(true);
+        SlVolume.setPaintTicks(true);
+        SlVolume.setValue(0);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
@@ -151,19 +158,27 @@ public class MainJFrame extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(SlVolume, gridBagConstraints);
 
-        jRadioButton1.setText("jRadioButton1");
+        buttonGroup1.add(jRadioButton1);
+        jRadioButton1.setText("Default");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
         getContentPane().add(jRadioButton1, gridBagConstraints);
 
-        jRadioButton2.setText("jRadioButton2");
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setText("Preset1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
         getContentPane().add(jRadioButton2, gridBagConstraints);
 
-        jRadioButton3.setText("jRadioButton3");
+        buttonGroup1.add(jRadioButton3);
+        jRadioButton3.setText("Preset2");
+        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton3ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
@@ -177,6 +192,10 @@ public class MainJFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton3ActionPerformed
 
     /**
      * @param args the command line arguments
