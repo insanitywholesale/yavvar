@@ -3,24 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javafxaskhshvraveio;
+package inhereplayer;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.util.StringConverter;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.stage.Stage;
-//import javafx.beans.Observable;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
 /**
  *
@@ -30,7 +35,7 @@ public class FXMLDocumentController implements Initializable {
 
     //FXML variables
     @FXML
-    private Label info, playingInfo;
+    private Label info, playingInfo, bassLabel, midrangeLabel, trebleLabel, balanceLabel, volumeLabel;
 
     @FXML
     private Slider SlBass, SlMidrange, SlTreble, SlBalance, SlVolume;
@@ -43,60 +48,60 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private ToggleGroup presetGroup;
-    
+
     @FXML
     private Menu fileMenu, helpMenu;
-    
+
     @FXML
     private MenuItem openFileMenuItem, helpAboutMenuItem;
+	
+	@FXML
+    private CheckMenuItem darkmodeMenuItem;
+	
+	@FXML
+    private MenuBar menuBar;
 
+    @FXML
+    private AnchorPane anchorPane;
+	
+	@FXML
+    private VBox vbox;
+
+	
     //non-FXML variables
-    
-    //
-        
-    //old way of playing audio (only supports wav)
-    audioPlayer player;
-    String playerInfo = "Stopped";
-
-    //new way of playing audio (supports mp3 too)
-    myMediaPlayer mPlayer;
-    String mPlayerInfo = "Stopped";
-    
-    myFileChooser mFC = new myFileChooser();
-    
-    //FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Audio files", "*.mp3", "*.wav");
-    //fileChooser.getExtensionFilters(extFilter).add(extFilter);
+    private MediaPlayer mPlayer;
+    private boolean playerStopped = true;
+    private String mPlayerInfo = "Stopped";
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setupPresets();
         balanceLabel();
-        //audioStuff();
-        mediaStuff();
+        loadPresetDefault();
         showInfo();
+        playingInfo.setText("No audio loaded");
     }
 
     Preset Presets[] = new Preset[3];
 
-    void setupPresets() {
-        Presets[0] = new Preset(0, 0, 0, 0, 0);
+    private void setupPresets() {
+        Presets[0] = new Preset(0, 0, 0, 0, 9);
         Presets[1] = new Preset(-1, -1, 9, 0, 4);
         Presets[2] = new Preset(2, 4, -2, 4, 2);
     }
 
     @FXML
-    void loadPresetDefault() {
+    private void loadPresetDefault() {
         SlBass.setValue(Presets[0].bass);
         SlMidrange.setValue(Presets[0].midrange);
         SlTreble.setValue(Presets[0].tremble);
         SlBalance.setValue(Presets[0].balance);
         SlVolume.setValue(Presets[0].volume);
-        presetDefault.setSelected(true);
         showInfo();
     }
 
     @FXML
-    void loadPreset1() {
+    private void loadPreset1() {
         SlBass.setValue(Presets[1].bass);
         SlMidrange.setValue(Presets[1].midrange);
         SlTreble.setValue(Presets[1].tremble);
@@ -106,7 +111,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    void loadPreset2() {
+    private void loadPreset2() {
         SlBass.setValue(Presets[2].bass);
         SlMidrange.setValue(Presets[2].midrange);
         SlTreble.setValue(Presets[2].tremble);
@@ -116,7 +121,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    public void storePreset(Preset preset) {
+    private void storePreset(Preset preset) {
         preset.bass = (int) SlBass.getValue();
         preset.midrange = (int) SlMidrange.getValue();
         preset.tremble = (int) SlTreble.getValue();
@@ -125,14 +130,17 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    private void savePresetAction(ActionEvent event) {
+    private void savePreset() {
         if (presetDefault.isSelected()) {
             storePreset(Presets[0]);
-        } else if (preset1.isSelected()) {
+        }
+        else if (preset1.isSelected()) {
             storePreset(Presets[1]);
-        } else if (preset2.isSelected()) {
+        }
+        else if (preset2.isSelected()) {
             storePreset(Presets[2]);
-        } else {
+        }
+        else {
             System.out.println("Error: No preset button is selected");
         }
     }
@@ -143,10 +151,10 @@ public class FXMLDocumentController implements Initializable {
             @Override
             public String toString(Double n) {
                 if (n > 0) {
-                    return "Right";
+                    return "R";
                 }
                 if (n < 0) {
-                    return "Left";
+                    return "L";
                 }
                 if (n == 0) {
                     return "Center";
@@ -157,9 +165,9 @@ public class FXMLDocumentController implements Initializable {
             @Override
             public Double fromString(String s) {
                 switch (s) {
-                    case "Left":
+                    case "L":
                         return -5.0;
-                    case "Right":
+                    case "R":
                         return 5.0;
 
                     default:
@@ -174,130 +182,105 @@ public class FXMLDocumentController implements Initializable {
         String balance;
         int b = (int) SlBalance.getValue();
         if (b > 0) {
-            //The commented out parts cause it to appear as: Left3 or Right2 for example
-            balance = "Right"; // + String.valueOf(b);
+            balance = "Right";
         } else if (b < 0) {
-            balance = "Left"; // + String.valueOf(-b);
+            balance = "Left";
         } else {
             balance = "Center";
         }
 
-        //audioStatus();
-        mediaStatus();
-        mPlayer.setVolume(SlVolume.getValue()/100);
-        
+        if (mPlayer != null) {
+            mediaStatus();
+            mPlayer.setVolume(SlVolume.getValue() / 100);
+        }
+
         info.setText("Bass:" + (int) SlBass.getValue() + "\n"
-                + "Midrange: " + (int) SlMidrange.getValue() + "\n"
-                + "Treble: " + (int) SlTreble.getValue() + "\n"
-                + "Balance: " + balance + "\n"
-                + "Volume: " + (int) SlVolume.getValue()
+            + "Midrange: " + (int) SlMidrange.getValue() + "\n"
+            + "Treble: " + (int) SlTreble.getValue() + "\n"
+            + "Balance: " + balance + "\n"
+            + "Volume: " + (int) SlVolume.getValue()
         );
 
     }
-
-    //Audio player with start and stop functionality
-    //reference: https://stackoverflow.com/questions/5833553/how-to-stop-a-music-clip
-    // audio player using LineListener
-    private void audioStuff() {
-        player = new audioPlayer();
-        String audioFP = "./audio.wav";
-        player.audioPath(audioFP);
-    }
-
-    @FXML
-    private void audioStart() throws InterruptedException {
-        player.setPlayCompleted(false);
-        audioStatus();
-        player.start();
-    }
-
-    @FXML
-    private void audioStop() {
-        player.setPlayCompleted(true);
-        audioStatus();
-        player.stop();
-    }
-
-    @FXML
-    private void audioReset() {
-        audioStop();
-        audioStuff();
-        setupPresets();
-        loadPresetDefault();
-        showInfo();
-    }
-
-    private void audioStatus() {
-        if (player.getPlayCompleted()) {
-            playerInfo = "Stopped";
-        } else {
-            playerInfo = "Playing";
-        }
-        playingInfo.setText(playerInfo);
-    }
-
-    //audio player using MediaPlayer
-    private void mediaStuff() {
-        mPlayer = null;
-        mPlayer = new myMediaPlayer();
-        mPlayer.loadMedia("/home/angle/Downloads/shortmix.wav");
-    }
     
-    private void mediaStuff(File mediaFile) {
-        mPlayer = null;
-        mPlayer = new myMediaPlayer();
-        String mediaFS = mediaFile.toURI().toString();
-        String mediaFileString = mediaFS.substring(5);
-        System.out.println("mediaFileString: " + mediaFileString);
-        mPlayer.loadMedia(mediaFileString);
-    }
-
     @FXML
     private void mediaStart() {
-        mPlayer.setPlayCompleted(false);
-        mediaStatus();
-        mPlayer.startMedia();
+		if (mPlayer != null) {
+			playerStopped = false;
+			mPlayer.play();
+			mediaStatus();
+		}
     }
 
     @FXML
     private void mediaPause() {
-        mPlayer.setPlayCompleted(true);
-        mPlayer.pauseMedia();
-        mediaStatus();
+		if (mPlayer != null) {
+			playerStopped = true;
+			mPlayer.pause();
+			mediaStatus();
+		}
     }
 
     @FXML
     private void mediaStop() {
-        mPlayer.setPlayCompleted(true);
-        mPlayer.stopMedia();
-        mediaStatus();
+		if (mPlayer != null) {
+			playerStopped = true;
+			mPlayer.stop();
+			mediaStatus();
+		}
     }
 
     @FXML
     private void mediaReset() {
-        mediaStop();
-        mediaStuff();
+        mPlayer = null;
         setupPresets();
-        loadPresetDefault();
         showInfo();
+		playingInfo.setText("No audio loaded");
     }
 
     private void mediaStatus() {
-        if (mPlayer.getPlayCompleted()) {
+        if (playerStopped) {
             mPlayerInfo = "Stopped";
         } else {
             mPlayerInfo = "Playing";
         }
-
         playingInfo.setText(mPlayerInfo);
     }
-    
+
     @FXML
     private void openAudioFile() {
-        Stage myStage = (Stage)info.getScene().getWindow();
-        mFC.openMyFileChooser(myStage);
-        System.out.println("selectedFile: " + mFC.getSelectedFile());
-        mediaStuff(mFC.getSelectedFile());
+        if (mPlayer != null) {
+            mediaPause();
+        }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Audio File");
+        fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Audio Files", "*.ogg", "*.wav", "*.mp3", "*.aac")
+        );
+        File selectedFile = fileChooser.showOpenDialog(null);
+		System.out.println("selectedFile: " + selectedFile);
+        Media media = new Media(selectedFile.toURI().toString());
+		System.out.println("mediaString: " + selectedFile.toURI().toString());
+        mPlayer = new MediaPlayer(media);
+        playingInfo.setText("Stopped");
     }
+	
+	@FXML
+	private void setInitialTheme() {
+		vbox.getScene().getStylesheets().add("/css/lightmodeStyle.css");
+	}
 
+	@FXML
+	private void changeTheme() {
+		Scene scene = vbox.getScene();
+		
+		if (darkmodeMenuItem.isSelected()) {
+			scene.getStylesheets().removeAll("/css/lightmodeStyle.css");
+			scene.getStylesheets().add("/css/darkmodeStyle.css");
+		}
+		else {
+			scene.getStylesheets().removeAll("/css/darkmodeStyle.css");
+			scene.getStylesheets().add("/css/lightmodeStyle.css");
+		}
+	}
 }

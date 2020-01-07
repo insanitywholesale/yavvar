@@ -1,0 +1,28 @@
+.buttonStyle {
+    -fx-background-color: #252525;
+    -fx-text-fill: #ff1493;
+    -fx-border-color: #00ffff;
+    -fx-border-width: 2px;
+}
+
+.labelStyle {
+    -fx-text-fill: #ff1493;
+}
+
+.radiobuttonStyle {
+        -fx-background-color: #252525;
+    -fx-text-fill: #ff1493;
+    -fx-border-color: #00ffff;
+    -fx-border-width: 2px;
+}
+
+.sliderStyle {
+    -fx-background-color: #252525;
+    -fx-text-background-color: #ff1493;
+    -fx-border-color: #00ffff;
+    -fx-border-width: 2px;
+}
+
+.anchorpaneStyle {
+    -fx-background-color: #000000;
+}
