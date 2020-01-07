@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="vbox" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxaskhshvraveio.FXMLDocumentController">
+<VBox fx:id="vbox" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="inhereplayer.FXMLDocumentController">
    <children>
       <MenuBar fx:id="menuBar">
         <menus>
