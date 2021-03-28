@@ -4,12 +4,11 @@ public class MyUtils {
 
     public static void binSearch(Book bookArray[], int search) {
         int low = 0, high = 9, mid = -1;
-        int x = search;
         while (low <= high) {
             mid = (low + high) / 2;
-            if (x < bookArray[mid].getYear()) {
+            if (search < bookArray[mid].getYear()) {
                 high = mid - 1;
-            } else if (x > bookArray[mid].getYear()) {
+            } else if (search > bookArray[mid].getYear()) {
                 low = mid + 1;
             }
         }
@@ -38,8 +37,9 @@ public class MyUtils {
     public static void seqSearch(Book bookArray[], String search) {
         int found = 0;
         for (int i = 0; i < 9; i++) {
-            if (bookArray[i].getISBN().equals(search)) {
+            if ((bookArray[i] != null) && (bookArray[i].getISBN().equals(search))) {
                 System.out.println(bookArray[i]);
+                found++;
             }
         }
         if (found == 0) {
@@ -50,8 +50,9 @@ public class MyUtils {
     public static void seqSearch(Book bookArray[], int search) {
         int found = 0;
         for (int i = 0; i < 9; i++) {
-            if (bookArray[i].getYear() == search) {
+            if ((bookArray[i] != null) && (bookArray[i].getYear() == search)) {
                 System.out.println(bookArray[i]);
+                found++;
             }
         }
         if (found == 0) {

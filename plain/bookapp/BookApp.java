@@ -6,44 +6,74 @@ public class BookApp {
 
     public static void main(String[] args) {
         Book bookArray[] = new Book[10];
+        bookArray[0] = new Book("a", "me", "9605122839", "mypub1", 123, 1999, 13.12);
+        bookArray[1] = new Book("b", "me", "9780110002224", "mypub2", 789, 1789, 01.65);
         boolean end = false;
         while (!end) {
             listOptions();
             switch (getUserInt(1, 5)) {
                 case 1:
-                    //check full (if last is not null, it's not full)
-                    if (bookArray[9] != null) {
-                        //find first non-null spot
-                        for (int i = 0; i < 10; i++) {
-                            if (bookArray[i] != null) {
-                                bookArray[i] = bookMenu();
-                            }
+                    //find first non-null spot
+                    boolean inserted = false;
+                    for (int i = 0; i < 10; i++) {
+                        if (bookArray[i] != null) {
+                            bookArray[i] = bookMenu();
+                            inserted = true;
                         }
+                    }
+                    if (!inserted) {
+                        System.out.println("den mporei na ginei eisagwgh vivliou epeidh o xwros apothikeyshs gemise");
                     }
                     break;
                 case 2:
-                    //TODO: implement nested menu with while
-                    int searchField = searchField();
+                    boolean endField = false;
+                    boolean endMethod = false;
+                    int searchField;
+                    String isbn = "";
+                    int year = LocalDate.now().getYear() + 2;
                     int searchMethod;
-                    if (searchField == 1) {
-                        String isbn = enterISBN();
-                        searchMethod = searchMethod();
-                        if (searchMethod == 1) {
-                            MyUtils.seqSearch(bookArray, isbn);
-                        } else {
-                            MyUtils.binSearch(bookArray, isbn);
+                    while (!endField) {
+                        searchField = searchField();
+                        switch (searchField) {
+                            case 1:
+                                isbn = enterISBN();
+                                break;
+                            case 2:
+                                year = enterYear();
+                                break;
+                            default:
+                                endField = true;
+                                break;
                         }
-                    } else if (searchField == 2) {
-                        int year = enterYear();
-                        searchMethod = searchMethod();
-                        if (searchMethod == 1) {
-                            MyUtils.seqSearch(bookArray, year);
-                        } else {
-                            MyUtils.binSearch(bookArray, year);
+                        while (!endMethod && (searchField == 1 || searchField == 2)) {
+                            searchMethod = searchMethod();
+                            switch (searchMethod) {
+                                case 1:
+                                    if (searchField == 1) {
+                                        MyUtils.seqSearch(bookArray, isbn);
+                                    } else {
+                                        MyUtils.seqSearch(bookArray, year);
+                                    }
+                                    endMethod = true;
+                                    endField = true;
+                                    break;
+                                case 2:
+                                    if (searchField == 1) {
+                                        MyUtils.binSearch(bookArray, isbn);
+                                    } else {
+                                        MyUtils.binSearch(bookArray, year);
+                                    }
+                                    endMethod = true;
+                                    endField = true;
+                                    break;
+                                default:
+                                    endMethod = true;
+                                    break;
+                            }
                         }
-                    } else {
-                        break;
+                        endMethod = false;
                     }
+                    endField = false;
                     break;
                 case 3:
                     MyUtils.valueSearch(bookArray);
