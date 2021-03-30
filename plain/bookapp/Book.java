@@ -38,7 +38,15 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" + "\n\ttitle=" + title + ",\n\ttuthor=" + tuthor + ",\n\tISBN=" + ISBN + ",\n\tpublisher=" + publisher + ",\n\tpages=" + pages + ",\n\tyear=" + year + ",\n\tprice=" + price + "\n}";
+        return "Book{" +
+                "\n\ttitle=" + title +
+                ",\n\ttuthor=" + tuthor +
+                ",\n\tISBN=" + ISBN +
+                ",\n\tpublisher=" + publisher +
+                ",\n\tpages=" + pages +
+                ",\n\tyear=" + year +
+                ",\n\tprice=" + price +
+                "\n}";
     }
 
 }

@@ -8,22 +8,24 @@ public class BookApp {
         Book bookArray[] = new Book[10];
         bookArray[0] = new Book("a", "me", "9605122839", "mypub1", 123, 1999, 13.12);
         bookArray[1] = new Book("b", "me", "9780110002224", "mypub2", 789, 1789, 01.65);
+        bookArray[2] = new Book("pro linux system admin", "dennis/james/peter", "9781484220078", "A1press", 1008, 2017, 74.82);
         boolean end = false;
         while (!end) {
             listOptions();
             switch (getUserInt(1, 5)) {
                 case 1:
                     //find first non-null spot
-                    boolean inserted = false;
+                    int insertIndex = -1;
                     for (int i = 0; i < 10; i++) {
                         if (bookArray[i] != null) {
-                            bookArray[i] = bookMenu();
-                            inserted = true;
+                            insertIndex = i;
                         }
                     }
-                    if (!inserted) {
+                    if (insertIndex == -1) {
                         System.out.println("den mporei na ginei eisagwgh vivliou epeidh o xwros apothikeyshs gemise");
+                        break;
                     }
+                    bookArray[insertIndex] = bookMenu();
                     break;
                 case 2:
                     boolean endField = false;
@@ -104,10 +106,32 @@ public class BookApp {
         return isbn;
     }
 
+    public static String enterISBN(boolean prompt) {
+        String isbn = "";
+        while (!correctISBN(isbn)) {
+            if (prompt) {
+                System.out.println("Dwste ISBN:");
+            }
+            isbn = scannerUserInput.getString();
+        }
+        return isbn;
+    }
+
     public static int enterYear() {
-        int year = LocalDate.now().getYear() + 5;
+        int year = LocalDate.now().getYear() + 1;
         while (year > LocalDate.now().getYear()) {
             System.out.println("Dwste etos:");
+            year = scannerUserInput.getInteger();
+        }
+        return year;
+    }
+
+    public static int enterYear(boolean prompt) {
+        int year = LocalDate.now().getYear() + 1;
+        while (year > LocalDate.now().getYear()) {
+            if (prompt) {
+                System.out.println("Dwste etos:");
+            }
             year = scannerUserInput.getInteger();
         }
         return year;
@@ -145,16 +169,13 @@ public class BookApp {
         System.out.println("syggrafeas:");
         String author = scannerUserInput.getString();
         System.out.println("ISBN:");
-        String isbn = scannerUserInput.getString();
-        while (!correctISBN(isbn)) {
-            isbn = scannerUserInput.getString();
-        }
+        String isbn = enterISBN(false);
         System.out.println("ekdotikos oikos:");
         String publisher = scannerUserInput.getString();
         System.out.println("arithmos selidwn:");
         int pages = scannerUserInput.getInteger();
         System.out.println("etos ekdoshs:");
-        int year = scannerUserInput.getInteger();
+        int year = enterYear(false);
         System.out.println("timh:");
         double price = scannerUserInput.getDouble();
         return new Book(title, author, isbn, publisher, pages, year, price);
@@ -170,7 +191,8 @@ public class BookApp {
     }
 
     public static boolean correctISBN(String ISBN) {
-        if (ISBN.length() != 13 || ISBN.length() != 10) {
+        ISBN = ISBN.replaceAll("[^0-9]", "");
+        if (ISBN.length() != 13 && ISBN.length() != 10) {
             return false;
         }
 
