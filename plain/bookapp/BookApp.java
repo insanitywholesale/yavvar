@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 public class BookApp {
 
+    //possible improvement 1: check if book with the same isbn exists
+    //possible improvement 2: ability to delete book
     public static void main(String[] args) {
         Book bookArray[] = new Book[10];
         bookArray[0] = new Book("a", "me", "9605122839", "mypub1", 123, 1999, 13.12);
@@ -25,8 +27,13 @@ public class BookApp {
                         System.out.println("den mporei na ginei eisagwgh vivliou epeidh o xwros apothikeyshs gemise");
                         break;
                     }
-                    bookArray[insertIndex] = bookMenu();
-                    break;
+                    Book newBook = bookMenu();
+                    if (newBook == null) {
+                        break;
+                    } else {
+                        bookArray[insertIndex] = newBook;
+                        break;
+                    }
                 case 2:
                     boolean endField = false;
                     boolean endMethod = false;
@@ -106,13 +113,16 @@ public class BookApp {
         return isbn;
     }
 
-    public static String enterISBN(boolean prompt) {
+    public static String enterISBN(boolean canCancel) {
         String isbn = "";
         while (!correctISBN(isbn)) {
-            if (prompt) {
-                System.out.println("Dwste ISBN:");
+            if (canCancel) {
+                System.out.println("ISBN (0 gia akyrwsh kataxwrishs):");
             }
             isbn = scannerUserInput.getString();
+            if (isbn.equals("0")) {
+                break;
+            }
         }
         return isbn;
     }
@@ -168,8 +178,11 @@ public class BookApp {
         String title = scannerUserInput.getString();
         System.out.println("syggrafeas:");
         String author = scannerUserInput.getString();
-        System.out.println("ISBN:");
-        String isbn = enterISBN(false);
+        // ISBN in this case requires special handling for cancelling input
+        String isbn = enterISBN(true);
+        if (isbn.equals("0")) {
+            return null;
+        }
         System.out.println("ekdotikos oikos:");
         String publisher = scannerUserInput.getString();
         System.out.println("arithmos selidwn:");
