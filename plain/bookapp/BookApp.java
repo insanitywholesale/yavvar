@@ -4,10 +4,15 @@ import java.time.LocalDate;
 
 public class BookApp {
 
+    //global var bad
+    public static Book bookArray[] = new Book[10];
+
     //possible improvement 1: check if book with the same isbn exists
     //possible improvement 2: ability to delete book
     public static void main(String[] args) {
-        Book bookArray[] = new Book[10];
+        System.out.println("ta arxeia java yparxoyn kai sto github: https://github.com/insanitywholesale/yavvar/tree/master/plain/bookapp");
+        System.out.println("");
+
         bookArray[0] = new Book("a", "me", "9605122839", "mypub1", 123, 1999, 13.12);
         bookArray[1] = new Book("b", "me", "9780110002224", "mypub2", 789, 1789, 01.65);
         bookArray[2] = new Book("pro linux system admin", "dennis/james/peter", "9781484220078", "A1press", 1008, 2017, 74.82);
@@ -207,6 +212,13 @@ public class BookApp {
         ISBN = ISBN.replaceAll("[^0-9]", "");
         if (ISBN.length() != 13 && ISBN.length() != 10) {
             return false;
+        }
+
+        for (int i = 0; i < 9; i++) {
+            if ((bookArray[i] != null) && (bookArray[i].getISBN().equals(ISBN))) {
+                System.out.println("Yparxei hdh vivlio me ayto to ISBN");
+                return false;
+            }
         }
 
         if (ISBN.length() == 10) {
