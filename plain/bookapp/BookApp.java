@@ -6,11 +6,17 @@ public class BookApp {
 
     //global var bad
     public static Book bookArray[] = new Book[10];
+    public static int sorting = 0; //0 = unsorted, 1 = sorted by isbn, 2 = sorted by year
 
     //possible improvement 1: check if book with the same isbn exists
     //possible improvement 2: ability to delete book
     public static void main(String[] args) {
         System.out.println("ta arxeia java yparxoyn kai sto github: https://github.com/insanitywholesale/yavvar/tree/master/plain/bookapp");
+        System.out.println("####### PROSOXH #######");
+        System.out.println("den douleuei h klhsh ths taksinomhshs, thelei doyleia akoma");
+        System.out.println("oi algorithmoi yparxoun sthn klash MyUtils alla den xeirizontai thn yparksh null pediwn oute taksinomhsh me ola ta pedia");
+        System.out.println("####### PROSOXH #######");
+        System.out.println("");
         System.out.println("");
 
         bookArray[0] = new Book("a", "me", "9605122839", "mypub1", 123, 1999, 13.12);
@@ -19,7 +25,7 @@ public class BookApp {
         boolean end = false;
         while (!end) {
             listOptions();
-            switch (getUserInt(1, 5)) {
+            switch (getUserInt(1, 6)) {
                 case 1:
                     //find first non-null spot
                     int insertIndex = -1;
@@ -93,13 +99,52 @@ public class BookApp {
                     MyUtils.valueSearch(bookArray);
                     break;
                 case 4:
+                    boolean endSortField = false;
+                    boolean endSortMethod = false;
+                    int sortField = 0;
+                    int sortMethod;
+                    while (!endSortField) {
+                        sortField = sortField();
+                        sorting = sortField;
+                        endSortField = true;
+                    }
+                    while (!endSortMethod) {
+                        sortMethod = sortMethod();
+                        switch (sortMethod) {
+                            case 1:
+                                bookArray = MyUtils.bubbleSort(bookArray, sorting);
+                                endSortMethod = true;
+                                break;
+                            case 2:
+                                bookArray = MyUtils.insertionSort(bookArray, sorting);
+                                endSortMethod = true;
+                                break;
+                            case 3:
+                                bookArray = MyUtils.selectionSort(bookArray, sorting);
+                                endSortMethod = true;
+                                break;
+                            case 4:
+                                bookArray = MyUtils.quickSort(bookArray, sorting);
+                                endSortMethod = true;
+                                break;
+                            case 5:
+                                bookArray = MyUtils.mergeSort(bookArray, sorting);
+                                endSortMethod = true;
+                                break;
+                            default:
+                                endSortMethod = true;
+                                break;
+                        }
+                    }
+                    break;
+                case 5:
                     for (int i = 0; i < 9; i++) {
                         if (bookArray[i] != null) {
                             System.out.println(bookArray[i]);
                         }
                     }
                     break;
-                case 5:
+                case 6:
                     end = true;
                     break;
                 default:
@@ -108,6 +153,27 @@ public class BookApp {
             }
         }//end main while loop
     }//end main
+
+    public static int sortMethod() {
+        System.out.println("Epilogh methodou taksinomhshs:");
+        System.out.println("  1. bubblesort");
+        System.out.println("  2. insertionsort");
+        System.out.println("  3. selectionsort");
+        System.out.println("  4. quicksort");
+        System.out.println("  5. mergesort");
+        System.out.println("  6. Epistrofh sthn epilogh pediou taksinomhshs");
+        return getUserInt(1, 6);
+    }
+
+    public static int sortField() {
+        System.out.println("Epilogh pediou taksinomhshs:");
+        System.out.println("  1. Onoma syggrafea");
+        System.out.println("  2. ISBN");
+        System.out.println("  3. Etos kykloforias");
+        System.out.println("  4. Timh vivliou");
+        System.out.println("  5. Epistrofh sthn arxikh lista epilogwn");
+        return getUserInt(1, 5);
+    }
 
     public static String enterISBN() {
         String isbn = "";
@@ -204,8 +270,9 @@ public class BookApp {
         System.out.println("  1. Eisagwgh stoixeiwn vivliou");
         System.out.println("  2. Anazhthsh vivliou");
         System.out.println("  3. Emfanish stoixeiwn vivliwn metaksy kapoiwn timwn");
-        System.out.println("  4. Emfanish stoixeiwn olwn twn vivliwn");
-        System.out.println("  5. Telos");
+        System.out.println("  4. Taksinomhsh vivliwn");
+        System.out.println("  5. Emfanish stoixeiwn olwn twn vivliwn");
+        System.out.println("  6. Telos");
     }
 
     public static boolean correctISBN(String ISBN) {

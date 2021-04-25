@@ -3,7 +3,7 @@ package bookapp;
 public class Book {
 
     private String title;
-    private String tuthor;
+    private String author;
     private String ISBN;
     private String publisher;
     private int pages;
@@ -14,9 +14,9 @@ public class Book {
         //empty constructor
     }
 
-    public Book(String title, String tuthor, String ISBN, String publisher, int pages, int year, double price) {
+    public Book(String title, String author, String ISBN, String publisher, int pages, int year, double price) {
         this.title = title;
-        this.tuthor = tuthor;
+        this.author = author;
         this.ISBN = ISBN;
         this.publisher = publisher;
         this.pages = pages;
@@ -40,7 +40,7 @@ public class Book {
     public String toString() {
         return "Book{"
                 + "\n\ttitle=" + title
-                + ",\n\ttuthor=" + tuthor
+                + ",\n\ttuthor=" + author
                 + ",\n\tISBN=" + ISBN
                 + ",\n\tpublisher=" + publisher
                 + ",\n\tpages=" + pages
