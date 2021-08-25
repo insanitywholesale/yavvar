@@ -32,7 +32,7 @@ public class MyHeap {
             throw new HeapFullException("Heap is now Full");
         }
         int father, son;
-        son = ++index;
+        son = index++;
         btree[son] = item;  // αρχικά το item στο τέλος της heap
         father = son / 2;
         while (son > 1 && ((Comparable) btree[son]).compareTo((Comparable) btree[father]) > 0) {
@@ -69,5 +69,24 @@ public class MyHeap {
         }
         btree[father] = lastItem;
         return removeItem;
+    }
+
+    public String toString() {
+        String s = "";
+        for (int i = 0; i < capacity && btree[i] != null; i++) {
+            for (int j = 0; j < Math.pow(2, i) && j + Math.pow(2, i) < capacity; j++) {
+                if (btree[j + (int) Math.pow(2, i) - 1] != null) {
+                    System.out.print(btree[j + (int) Math.pow(2, i) - 1] + " ");
+                }
+            }
+            try {
+                if (btree[(int) Math.pow(2, i)] != null) {
+                    System.out.println("");
+                }
+            } catch (IndexOutOfBoundsException ex) {
+                break;
+            }
+        }
+        return s;
     }
 }
