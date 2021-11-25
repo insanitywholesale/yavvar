@@ -1,4 +1,4 @@
-package swingdemo;
+package databases;
 
 import java.sql.*;
 import java.awt.*;
