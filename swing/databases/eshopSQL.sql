@@ -99,6 +99,29 @@ $$ LANGUAGE SQL;
 
 SELECT create_tables();
 
+--                                     (userid   city     addr     zip      country  phone    email  )
+--CREATE OR REPLACE FUNCTION create_order(integer, varchar, varchar, varchar, varchar, varchar, varchar) RETURNS INTEGER AS $$
+--$$ LANGUAGE SQL;
+
+--                                          (userid   orderid  prodid   prodqty
+--CREATE OR REPLACE FUNCTION add_item_to_order(integer, integer, integer, integer) RETURNS void AS $$
+--$$ LANGUAGE SQL;
+
+--                                 (nick     email    passwd   fname    lname    city     zip      country  phone  )
+CREATE OR REPLACE FUNCTION add_user(varchar, varchar, varchar, varchar, varchar, varchar, varchar, varchar, varchar) RETURNS void AS $$
+    INSERT INTO Users (
+        UserNickName,
+        UserEmail,
+        UserPassword,
+        UserFirstName,
+        UserLastName,
+        UserCity,
+        UserZipcode,
+        UserCountry,
+        UserPhone
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);
+$$ LANGUAGE SQL;
+
 CREATE OR REPLACE FUNCTION assign_weight_class() RETURNS void AS $$
     UPDATE Products
     SET ProductWeightClass = 5, ProductUpdated = NOW()
@@ -129,7 +152,6 @@ CREATE OR REPLACE FUNCTION get_unshipped_orders() RETURNS SETOF Orders AS $$
     SELECT * FROM Orders o WHERE o.OrderHasShipped = FALSE AND o.OrderHasArrived = FALSE;
 $$ LANGUAGE SQL;
 
---TODO: see if this workie
 --                                    (title    price  catID    manufID  desc     vers   weight sale     stock  )
 CREATE OR REPLACE FUNCTION add_product(varchar, float, integer, integer, varchar, float, float, boolean, boolean) RETURNS void AS $$
     INSERT INTO Products (
