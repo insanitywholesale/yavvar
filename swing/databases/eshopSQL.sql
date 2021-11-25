@@ -77,16 +77,18 @@ CREATE OR REPLACE FUNCTION create_tables() RETURNS void AS $$
         OrderCountry VARCHAR NOT NULL,
         OrderPhone VARCHAR NOT NULL,
         OrderEmail VARCHAR NOT NULL,
-        OrderDate TIMESTAMP NOT NULL,
         OrderHasShipped BOOLEAN NOT NULL DEFAULT FALSE,
         OrderHasArrived BOOLEAN NOT NULL DEFAULT FALSE,
         OrderTrackingNumber VARCHAR,
         OrderAdded TIMESTAMP NOT NULL DEFAULT NOW(),
-        OrderUpdated TIMESTAMP NOT NULL DEFAULT NOW()
+        OrderUpdated TIMESTAMP NOT NULL DEFAULT NOW(),
+        OrderFinalized TIMESTAMP NOT NULL DEFAULT NOW(),
+        OrderFinal BOOLEAN NOT NULL DEFAULT FALSE
     );
 
+    --TODO: define primary key
     CREATE TABLE if not exists OrderedProducts (
-        OrderedProductID SERIAL PRIMARY KEY NOT NULL,
+        ProductID SERIAL NOT NULL,
         OrderID SERIAL NOT NULL,
         ProductID SERIAL NOT NULL,
         ProductQuantity INTEGER NOT NULL DEFAULT 1,
@@ -100,12 +102,38 @@ $$ LANGUAGE SQL;
 SELECT create_tables();
 
 --                                     (userid   city     addr     zip      country  phone    email  )
---CREATE OR REPLACE FUNCTION create_order(integer, varchar, varchar, varchar, varchar, varchar, varchar) RETURNS INTEGER AS $$
---$$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION create_order(integer, varchar, varchar, varchar, varchar, varchar, varchar) RETURNS INTEGER AS $$
+    INSERT INTO Orders (
+        OrderUserID,
+        OrderCity,
+        OrderAddress,
+        OrderZipcode,
+        OrderCountry,
+        OrderPhone,
+        OrderEmail
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7);
+$$ LANGUAGE SQL;
 
---                                          (userid   orderid  prodid   prodqty
---CREATE OR REPLACE FUNCTION add_item_to_order(integer, integer, integer, integer) RETURNS void AS $$
---$$ LANGUAGE SQL;
+--                                          (orderid  prodid   prodqty)
+CREATE OR REPLACE FUNCTION add_item_to_order(integer, integer, integer) RETURNS void AS $$
+    INSERT INTO OrderedProducts (
+        OrderID,
+        ProductID,
+        ProductQuantity
+    ) VALUES ($1, $2, $3);
+$$ LANGUAGE SQL;
+
+--                                       (orderid)
+CREATE OR REPLACE FUNCTION finalize_order(integer) RETURNS void AS $$
+    UPDATE Orders
+    SET OrderFinal = TRUE
+    WHERE OrderID == $1;
+$$ LANGUAGE SQL;
+
+--                                  (orderid)
+CREATE OR REPLACE FUNCTION get_order(integer) RETURNS SETOF Orders AS $$
+    SELECT * FROM Orders o WHERE o.OrderID == $1;
+$$ LANGUAGE SQL;
 
 --                                 (nick     email    passwd   fname    lname    city     zip      country  phone  )
 CREATE OR REPLACE FUNCTION add_user(varchar, varchar, varchar, varchar, varchar, varchar, varchar, varchar, varchar) RETURNS void AS $$
