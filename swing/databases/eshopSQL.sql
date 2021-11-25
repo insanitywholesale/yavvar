@@ -1,11 +1,33 @@
 --TODO: swith IDs from SERIAL to IDENTITY
---TODO: function to make shipping 0 over 50 EUR and increase up to 20 for heavy stuff
---TODO: figure out weight classes
+--TODO: make shipping 0 for order over 50
+--TODO: increase shipping for heavier stuff
 --TODO: figure out optargs to functions
 --TODO: figure out how to do discounts
+--TODO: figure out ordering
 --TODO: add users
+--TODO: if order has shipped, add tracking number
+
+--STORED PROCEDURES
 
 CREATE OR REPLACE FUNCTION create_tables() RETURNS void AS $$
+
+    CREATE TABLE if not exists Users (
+        UserID SERIAL PRIMARY KEY NOT NULL,
+        UserNickName VARCHAR NOT NULL,
+        UserEmail VARCHAR NOT NULL,
+        UserPassword VARCHAR NOT NULL,
+        UserFirstName VARCHAR NOT NULL,
+        UserLastName VARCHAR NOT NULL,
+        UserCity VARCHAR NOT NULL,
+        UserZipcode VARCHAR NOT NULL,
+        UserCountry VARCHAR NOT NULL,
+        UserPhone VARCHAR NOT NULL,
+        UserAdded TIMESTAMP NOT NULL DEFAULT NOW(),
+        UserUpdated TIMESTAMP NOT NULL DEFAULT NOW(),
+        UserIsAdmin BOOLEAN NOT NULL DEFAULT FALSE,
+        UserBecameAdmin TIMESTAMP
+    );
+
     CREATE TABLE if not exists Categories (
         CategoryID SERIAL PRIMARY KEY NOT NULL,
         CategoryName VARCHAR NOT NULL,
@@ -24,29 +46,6 @@ CREATE OR REPLACE FUNCTION create_tables() RETURNS void AS $$
         ManufacturerUpdated TIMESTAMP NOT NULL DEFAULT NOW()
     );
 
-    CREATE TABLE if not exists Orders (
-        OrderID SERIAL PRIMARY KEY NOT NULL,
-        OrderCost FLOAT NOT NULL,
-        OrderShippingCost FLOAT NOT NULL DEFAULT 5.0,
-        OrderTax FLOAT NOT NULL DEFAULT 24.0,
-        OrderTotalCost FLOAT NOT NULL,
-        OrderProcessed BOOLEAN NOT NULL DEFAULT FALSE,
-        OrderCity VARCHAR NOT NULL,
-        OrderShippingAddress VARCHAR NOT NULL,
-        OrderShippingAddress2 VARCHAR,
-        OrderZipcode VARCHAR NOT NULL,
-        OrderCountry VARCHAR NOT NULL,
-        OrderPhone VARCHAR NOT NULL,
-        OrderPhone2 VARCHAR,
-        OrderEmail VARCHAR NOT NULL,
-        OrderDate TIMESTAMP NOT NULL,
-        OrderHasShipped BOOLEAN NOT NULL DEFAULT FALSE, --TODO: if hasshipped, add tracking number
-        OrderHasArrived BOOLEAN NOT NULL DEFAULT FALSE,
-        OrderTrackingNumber VARCHAR,
-        OrderAdded TIMESTAMP NOT NULL DEFAULT NOW(),
-        OrderUpdated TIMESTAMP NOT NULL DEFAULT NOW()
-    );
-
     CREATE TABLE if not exists Products (
         --ProductID INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
         ProductID SERIAL PRIMARY KEY NOT NULL,
@@ -63,29 +62,62 @@ CREATE OR REPLACE FUNCTION create_tables() RETURNS void AS $$
         ProductAdded TIMESTAMP NOT NULL DEFAULT NOW(),
         ProductUpdated TIMESTAMP NOT NULL DEFAULT NOW()
     );
+
+    CREATE TABLE if not exists Orders (
+        OrderID SERIAL PRIMARY KEY NOT NULL,
+        OrderUserID SERIAL REFERENCES Users(UserID) NOT NULL,
+        OrderCost FLOAT NOT NULL,
+        OrderShippingCost FLOAT NOT NULL DEFAULT 5.0,
+        OrderTax FLOAT NOT NULL DEFAULT 24.0,
+        OrderTotalCost FLOAT NOT NULL,
+        OrderProcessed BOOLEAN NOT NULL DEFAULT FALSE,
+        OrderCity VARCHAR NOT NULL,
+        OrderAddress VARCHAR NOT NULL,
+        OrderZipcode VARCHAR NOT NULL,
+        OrderCountry VARCHAR NOT NULL,
+        OrderPhone VARCHAR NOT NULL,
+        OrderEmail VARCHAR NOT NULL,
+        OrderDate TIMESTAMP NOT NULL,
+        OrderHasShipped BOOLEAN NOT NULL DEFAULT FALSE,
+        OrderHasArrived BOOLEAN NOT NULL DEFAULT FALSE,
+        OrderTrackingNumber VARCHAR,
+        OrderAdded TIMESTAMP NOT NULL DEFAULT NOW(),
+        OrderUpdated TIMESTAMP NOT NULL DEFAULT NOW()
+    );
+
+    CREATE TABLE if not exists OrderedProducts (
+        OrderedProductID SERIAL PRIMARY KEY NOT NULL,
+        OrderID SERIAL NOT NULL,
+        ProductID SERIAL NOT NULL,
+        ProductQuantity INTEGER NOT NULL DEFAULT 1,
+        ProductTotalCost FLOAT NOT NULL,
+        Constraint Ordered_OrderID FOREIGN KEY(OrderID) REFERENCES Orders on delete cascade on update cascade,
+        Constraint Ordered_ProductID FOREIGN KEY(ProductID) REFERENCES Products on delete cascade on update cascade
+    );
+
 $$ LANGUAGE SQL;
 
 SELECT create_tables();
 
 CREATE OR REPLACE FUNCTION assign_weight_class() RETURNS void AS $$
     UPDATE Products
-    SET ProductWeightClass = 5
+    SET ProductWeightClass = 5, ProductUpdated = NOW()
     WHERE ProductWeight >= 20.0;
 
     UPDATE Products
-    SET ProductWeightClass = 4
+    SET ProductWeightClass = 4, ProductUpdated = NOW()
     WHERE ProductWeight < 20.0;
 
     UPDATE Products
-    SET ProductWeightClass = 3
+    SET ProductWeightClass = 3, ProductUpdated = NOW()
     WHERE ProductWeight < 10.5;
 
     UPDATE Products
-    SET ProductWeightClass = 2
+    SET ProductWeightClass = 2, ProductUpdated = NOW()
     WHERE ProductWeight < 5.5;
 
     UPDATE Products
-    SET ProductWeightClass = 1
+    SET ProductWeightClass = 1, ProductUpdated = NOW()
     WHERE ProductWeight < 1.1;
 $$ LANGUAGE SQL;
 
