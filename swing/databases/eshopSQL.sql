@@ -127,12 +127,12 @@ $$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION finalize_order(integer) RETURNS void AS $$
     UPDATE Orders
     SET OrderFinal = TRUE
-    WHERE OrderID == $1;
+    WHERE OrderID = $1;
 $$ LANGUAGE SQL;
 
 --                                  (orderid)
 CREATE OR REPLACE FUNCTION get_order(integer) RETURNS SETOF Orders AS $$
-    SELECT * FROM Orders o WHERE o.OrderID == $1;
+    SELECT * FROM Orders o WHERE o.OrderID = $1;
 $$ LANGUAGE SQL;
 
 --                                 (nick     email    passwd   fname    lname    city     zip      country  phone  )
