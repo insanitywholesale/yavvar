@@ -33,7 +33,8 @@ CREATE OR REPLACE FUNCTION create_tables() RETURNS void AS $$
     CREATE TABLE if not exists Manufacturers (
         ManufacturerID SERIAL PRIMARY KEY NOT NULL,
         ManufacturerName VARCHAR NOT NULL,
-        ManufacturerAddressID INTEGER
+        ManufacturerEmail VARCHAR NOT NULL,
+        ManufacturerAddressID INTEGER REFERENCES Addresses(AddressID)
     );
 
     CREATE TABLE if not exists Products (
@@ -45,7 +46,7 @@ CREATE OR REPLACE FUNCTION create_tables() RETURNS void AS $$
         ProductManufacturerID INTEGER REFERENCES Manufacturers(ManufacturerID),
         ProductDescription VARCHAR NOT NULL DEFAULT '',
         ProductVersion FLOAT NOT NULL DEFAULT 1.0,
-        ProductWeight FLOAT,
+        ProductWeight FLOAT NOT NULL DEFAULT 0.0,
         ProductWeightClass SMALLINT,
         ProductOnSale BOOLEAN NOT NULL DEFAULT FALSE
     );

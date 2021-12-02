@@ -74,9 +74,26 @@ CREATE OR REPLACE FUNCTION add_user(varchar, varchar, varchar, varchar, varchar)
     ) VALUES ($1, $2, $3, $4, $5);
 $$ LANGUAGE SQL;
 
+--                                       (nick     email    passwd   fname    lname  )
+CREATE OR REPLACE FUNCTION add_admin_user(varchar, varchar, varchar, varchar, varchar) RETURNS void AS $$
+    INSERT INTO Users (
+        UserNickName,
+        UserEmail,
+        UserPassword,
+        UserFirstName,
+        UserLastName,
+        UserIsAdmin
+    ) VALUES ($1, $2, $3, $4, $5, TRUE);
+$$ LANGUAGE SQL;
+
 --                                   (nick     passwd )
 CREATE OR REPLACE FUNCTION user_login(varchar, varchar) RETURNS INTEGER AS $$
     SELECT UserID FROM Users WHERE UserNickName = $1 AND UserPassword = $2;
+$$ LANGUAGE SQL;
+
+--                                   (userid )
+CREATE OR REPLACE FUNCTION user_login(integer) RETURNS BOOLEAN AS $$
+    SELECT UserIsAdmin FROM Users WHERE UserID = $1;
 $$ LANGUAGE SQL;
 
 --                                         (userid   addrid )
@@ -155,42 +172,39 @@ CREATE OR REPLACE FUNCTION add_product(varchar, float, integer, integer, varchar
     ) VALUES($1, $2, $3, $4, $5, $6, $7);
 $$ LANGUAGE SQL;
 
---                                                      (title    price  manufID  desc     vers   weight sale   )
-CREATE OR REPLACE FUNCTION add_product_with_manufacturer(varchar, float, integer, varchar, float, float, boolean) RETURNS void AS $$
+--                                                      (title    price  manufID  desc     vers   wght )
+CREATE OR REPLACE FUNCTION add_product_with_manufacturer(varchar, float, integer, varchar, float, float) RETURNS void AS $$
     INSERT INTO Products (
         ProductTitle,
         ProductPrice,
         ProductManufacturerID,
         ProductDescription,
         ProductVersion,
-        ProductWeight,
-        ProductOnSale
-    ) VALUES($1, $2, $3, $4, $5, $6, $7);
+        ProductWeight
+    ) VALUES($1, $2, $3, $4, $5, $6);
 $$ LANGUAGE SQL;
 
---                                                  (title    price  catID    desc     vers   weight sale   )
-CREATE OR REPLACE FUNCTION add_product_with_category(varchar, float, integer, varchar, float, float, boolean) RETURNS void AS $$
+--                                                  (title    price  catID    desc     vers   wght )
+CREATE OR REPLACE FUNCTION add_product_with_category(varchar, float, integer, varchar, float, float) RETURNS void AS $$
     INSERT INTO Products (
         ProductTitle,
         ProductPrice,
         ProductCategoryID,
         ProductDescription,
         ProductVersion,
-        ProductWeight,
-        ProductOnSale
-    ) VALUES($1, $2, $3, $4, $5, $6, $7);
+        ProductWeight
+    ) VALUES($1, $2, $3, $4, $5, $6);
 $$ LANGUAGE SQL;
 
---                                            (title    price  desc     vers   weight sale   )
-CREATE OR REPLACE FUNCTION add_product_minimal(varchar, float, varchar, float, float, boolean) RETURNS void AS $$
+--                                            (title    price  desc     vers   wght )
+CREATE OR REPLACE FUNCTION add_product_minimal(varchar, float, varchar, float, float) RETURNS void AS $$
     INSERT INTO Products (
         ProductTitle,
         ProductPrice,
         ProductDescription,
         ProductVersion,
-        ProductWeight,
-        ProductOnSale
-    ) VALUES($1, $2, $3, $4, $5, $6);
+        ProductWeight
+    ) VALUES($1, $2, $3, $4, $5);
 $$ LANGUAGE SQL;
 
 --                                             (prodid  catid   )
@@ -212,7 +226,7 @@ CREATE OR REPLACE FUNCTION get_product(integer) RETURNS Products AS $$
     SELECT * FROM Products p WHERE p.ProductID = $1;
 $$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION get_all_products() RETURNS SET OF Products AS $$
+CREATE OR REPLACE FUNCTION get_all_products() RETURNS SETOF Products AS $$
     SELECT * FROM Products;
 $$ LANGUAGE SQL;
 
@@ -256,7 +270,7 @@ CREATE OR REPLACE FUNCTION add_category_get_categoryid(varchar, varchar) RETURNS
     ) VALUES ($1, $2) RETURNING CategoryID;
 $$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION get_all_categories() RETURN SET OF Categories AS $$
+CREATE OR REPLACE FUNCTION get_all_categories() RETURNS SETOF Categories AS $$
     SELECT * FROM Categories;
 $$ LANGUAGE SQL;
 
@@ -293,9 +307,9 @@ CREATE OR REPLACE FUNCTION add_manufacturer_with_address_get_manufacturerid(varc
         ManufacturerName,
         ManufacturerEmail,
         ManufacturerAddressID
-    ) VALUES ($1, $2, $3, $4) RETURNING ManufacturerID;
+    ) VALUES ($1, $2, $3) RETURNING ManufacturerID;
 $$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION get_all_manufacturers() RETURN SET OF Manufacturers AS $$
+CREATE OR REPLACE FUNCTION get_all_manufacturers() RETURNS SETOF Manufacturers AS $$
     SELECT * FROM Manufacturers;
 $$ LANGUAGE SQL;

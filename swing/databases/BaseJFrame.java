@@ -8,10 +8,11 @@ public class BaseJFrame extends javax.swing.JFrame {
 
     private static String driverClassName = "org.postgresql.Driver";
     private static String url = "jdbc:postgresql://localhost:5432/tester";
-    private static Connection dbConnection = null;
     private static String username = "tester";
     private static String passwd = "Apasswd";
+    private static Connection dbConnection = null;
     private static Statement statement = null;
+    private static int userID = -1;
 
     private void initDB() {
         try {
@@ -19,7 +20,7 @@ public class BaseJFrame extends javax.swing.JFrame {
             Class.forName(driverClassName);
         } catch (ClassNotFoundException ex) {
             //TODO: properly handle exception
-            System.out.println(ex);
+            System.out.println("jdbc_drv exception: " + ex);
         }
         try {
             //Establish connection
@@ -28,7 +29,7 @@ public class BaseJFrame extends javax.swing.JFrame {
             statement = dbConnection.createStatement();
         } catch (SQLException ex) {
             //TODO: properly handle exception
-            System.out.println(ex);
+            System.out.println("db_conn exception: " + ex);
         }
         try {
             //Create base tables
@@ -146,7 +147,7 @@ public class BaseJFrame extends javax.swing.JFrame {
 
     private void addManufacturer(String name, String email, String address) {
         try {
-            ResultSet rs = statement.executeQuery("SELECT add_manufacturer_get_manufacturerid('" + name + "', '" + email + "', '" + address + "') AS MID;");
+            ResultSet rs = statement.executeQuery("SELECT add_manufacturer_with_address_get_manufacturerid('" + name + "', '" + email + "', '" + address + "') AS MID;");
             while (rs.next()) {
                 String mid = rs.getString("MID");
                 //TODO: handle null returned when password is wrong
@@ -176,6 +177,10 @@ public class BaseJFrame extends javax.swing.JFrame {
         String aid = addAddress("greece", "thessaloniki", "52525", "melenikou", "6900123456");
         if (aid.isEmpty()) {
             System.out.println("problem adding address");
+        }
+        String aid2 = addAddress("greece", "athina", "12345", "kapouekei", "210123456");
+        if (aid.isEmpty()) {
+            System.out.println("problem adding address 2");
         }
         addAddressToUser(uid, aid);
         uid = userLogin("usr", "1234");
@@ -292,7 +297,8 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "    CREATE TABLE if not exists Manufacturers (\n"
             + "        ManufacturerID SERIAL PRIMARY KEY NOT NULL,\n"
             + "        ManufacturerName VARCHAR NOT NULL,\n"
-            + "        ManufacturerAddressID INTEGER\n"
+            + "        ManufacturerEmail VARCHAR NOT NULL,\n"
+            + "        ManufacturerAddressID INTEGER REFERENCES Addresses(AddressID)\n"
             + "    );\n"
             + "\n"
             + "    CREATE TABLE if not exists Products (\n"
@@ -336,12 +342,12 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "\n"
             + "$$ LANGUAGE SQL;";
 
-    private static String createAuditTablesQuery = "--create audit/log tables\n"
+    private static String createAuditTablesQuery = "--create audit/log tables and triggers\n"
             + "\n"
             + "CREATE OR REPLACE FUNCTION create_audit_tables() RETURNS void AS $$\n"
             + "    CREATE TABLE if not exists UserAudit (\n"
-            + "        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,\n"
             + "        OperationType VARCHAR(1) NOT NULL,\n"
+            + "        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,\n"
             + "        OperatorID VARCHAR NOT NULL,\n"
             + "        UserID INTEGER NOT NULL,\n"
             + "        UserNickName VARCHAR NOT NULL,\n"
@@ -353,23 +359,25 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "        UserIsAdmin BOOLEAN NOT NULL\n"
             + "    );\n"
             + "    CREATE TABLE if not exists CategoryAudit (\n"
-            + "        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,\n"
             + "        OperationType VARCHAR(1) NOT NULL,\n"
+            + "        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,\n"
             + "        OperatorID VARCHAR NOT NULL,\n"
             + "        CategoryID INTEGER NOT NULL,\n"
             + "        CategoryName VARCHAR NOT NULL,\n"
             + "        CategoryDescription VARCHAR NOT NULL\n"
             + "    );\n"
             + "    CREATE TABLE if not exists ManufacturerAudit (\n"
-            + "        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,\n"
             + "        OperationType VARCHAR(1) NOT NULL,\n"
+            + "        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,\n"
             + "        OperatorID VARCHAR NOT NULL,\n"
             + "        ManufacturerID INTEGER NOT NULL,\n"
+            + "        ManufacturerName VARCHAR NOT NULL,\n"
+            + "        ManufacturerEmail VARCHAR NOT NULL,\n"
             + "        ManufacturerAddressID INTEGER\n"
             + "    );\n"
             + "    CREATE TABLE if not exists ProductAudit (\n"
-            + "        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,\n"
             + "        OperationType VARCHAR(1) NOT NULL,\n"
+            + "        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,\n"
             + "        OperatorID VARCHAR NOT NULL,\n"
             + "        ProductID INTEGER NOT NULL,\n"
             + "        ProductTitle VARCHAR NOT NULL,\n"
@@ -383,8 +391,8 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "        ProductOnSale BOOLEAN NOT NULL\n"
             + "    );\n"
             + "    CREATE TABLE if not exists OrderAudit (\n"
-            + "        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,\n"
             + "        OperationType VARCHAR(1) NOT NULL,\n"
+            + "        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,\n"
             + "        OperatorID VARCHAR NOT NULL,\n"
             + "        OrderID INTEGER NOT NULL,\n"
             + "        OrderUserID INTEGER NOT NULL,\n"
@@ -400,8 +408,8 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "        OrderTrackingNumber VARCHAR\n"
             + "    );\n"
             + "    CREATE TABLE if not exists AddressAudit (\n"
-            + "        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,\n"
             + "        OperationType VARCHAR(1) NOT NULL,\n"
+            + "        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,\n"
             + "        OperatorID VARCHAR NOT NULL,\n"
             + "        AddressID INTEGER NOT NULL,\n"
             + "        AddressCountry VARCHAR NOT NULL,\n"
@@ -414,8 +422,8 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "    );\n"
             + "\n"
             + "    CREATE TABLE if not exists OrderedProductsAudit (\n"
-            + "        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,\n"
             + "        OperationType VARCHAR(1) NOT NULL,\n"
+            + "        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,\n"
             + "        OperatorID VARCHAR NOT NULL,\n"
             + "        OrderedProductID INTEGER NOT NULL,\n"
             + "        OrderID INTEGER NOT NULL,\n"
@@ -443,7 +451,7 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "    END;\n"
             + "$$ LANGUAGE plpgsql;\n"
             + "\n"
-            + "CREATE OR REPLACE TRIGGER order_audit\n"
+            + "CREATE TRIGGER order_audit\n"
             + "AFTER INSERT OR UPDATE OR DELETE ON Orders\n"
             + "FOR EACH ROW EXECUTE PROCEDURE process_order_audit();\n"
             + "\n"
@@ -463,7 +471,7 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "    END;\n"
             + "$$ LANGUAGE plpgsql;\n"
             + "\n"
-            + "CREATE OR REPLACE TRIGGER user_audit\n"
+            + "CREATE TRIGGER user_audit\n"
             + "AFTER INSERT OR UPDATE OR DELETE ON Users\n"
             + "FOR EACH ROW EXECUTE PROCEDURE process_user_audit();\n"
             + "\n"
@@ -483,7 +491,7 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "    END;\n"
             + "$$ LANGUAGE plpgsql;\n"
             + "\n"
-            + "CREATE OR REPLACE TRIGGER address_audit\n"
+            + "CREATE TRIGGER address_audit\n"
             + "AFTER INSERT OR UPDATE OR DELETE ON Addresses\n"
             + "FOR EACH ROW EXECUTE PROCEDURE process_address_audit();\n"
             + "\n"
@@ -503,7 +511,7 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "    END;\n"
             + "$$ LANGUAGE plpgsql;\n"
             + "\n"
-            + "CREATE OR REPLACE TRIGGER category_audit\n"
+            + "CREATE TRIGGER category_audit\n"
             + "AFTER INSERT OR UPDATE OR DELETE ON Categories\n"
             + "FOR EACH ROW EXECUTE PROCEDURE process_category_audit();\n"
             + "\n"
@@ -523,7 +531,7 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "    END;\n"
             + "$$ LANGUAGE plpgsql;\n"
             + "\n"
-            + "CREATE OR REPLACE TRIGGER manufacturer_audit\n"
+            + "CREATE TRIGGER manufacturer_audit\n"
             + "AFTER INSERT OR UPDATE OR DELETE ON Manufacturers\n"
             + "FOR EACH ROW EXECUTE PROCEDURE process_manufacturer_audit();\n"
             + "\n"
@@ -543,7 +551,7 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "    END;\n"
             + "$$ LANGUAGE plpgsql;\n"
             + "\n"
-            + "CREATE OR REPLACE TRIGGER product_audit\n"
+            + "CREATE TRIGGER product_audit\n"
             + "AFTER INSERT OR UPDATE OR DELETE ON Products\n"
             + "FOR EACH ROW EXECUTE PROCEDURE process_product_audit();";
 
@@ -623,9 +631,26 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "    ) VALUES ($1, $2, $3, $4, $5);\n"
             + "$$ LANGUAGE SQL;\n"
             + "\n"
+            + "--                                       (nick     email    passwd   fname    lname  )\n"
+            + "CREATE OR REPLACE FUNCTION add_admin_user(varchar, varchar, varchar, varchar, varchar) RETURNS void AS $$\n"
+            + "    INSERT INTO Users (\n"
+            + "        UserNickName,\n"
+            + "        UserEmail,\n"
+            + "        UserPassword,\n"
+            + "        UserFirstName,\n"
+            + "        UserLastName,\n"
+            + "        UserIsAdmin\n"
+            + "    ) VALUES ($1, $2, $3, $4, $5, TRUE);\n"
+            + "$$ LANGUAGE SQL;\n"
+            + "\n"
             + "--                                   (nick     passwd )\n"
             + "CREATE OR REPLACE FUNCTION user_login(varchar, varchar) RETURNS INTEGER AS $$\n"
             + "    SELECT UserID FROM Users WHERE UserNickName = $1 AND UserPassword = $2;\n"
+            + "$$ LANGUAGE SQL;\n"
+            + "\n"
+            + "--                                   (userid )\n"
+            + "CREATE OR REPLACE FUNCTION user_login(integer) RETURNS BOOLEAN AS $$\n"
+            + "    SELECT UserIsAdmin FROM Users WHERE UserID = $1;\n"
             + "$$ LANGUAGE SQL;\n"
             + "\n"
             + "--                                         (userid   addrid )\n"
@@ -704,42 +729,39 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "    ) VALUES($1, $2, $3, $4, $5, $6, $7);\n"
             + "$$ LANGUAGE SQL;\n"
             + "\n"
-            + "--                                                      (title    price  manufID  desc     vers   weight sale   )\n"
-            + "CREATE OR REPLACE FUNCTION add_product_with_manufacturer(varchar, float, integer, varchar, float, float, boolean) RETURNS void AS $$\n"
+            + "--                                                      (title    price  manufID  desc     vers   wght )\n"
+            + "CREATE OR REPLACE FUNCTION add_product_with_manufacturer(varchar, float, integer, varchar, float, float) RETURNS void AS $$\n"
             + "    INSERT INTO Products (\n"
             + "        ProductTitle,\n"
             + "        ProductPrice,\n"
             + "        ProductManufacturerID,\n"
             + "        ProductDescription,\n"
             + "        ProductVersion,\n"
-            + "        ProductWeight,\n"
-            + "        ProductOnSale\n"
-            + "    ) VALUES($1, $2, $3, $4, $5, $6, $7);\n"
+            + "        ProductWeight\n"
+            + "    ) VALUES($1, $2, $3, $4, $5, $6);\n"
             + "$$ LANGUAGE SQL;\n"
             + "\n"
-            + "--                                                  (title    price  catID    desc     vers   weight sale   )\n"
-            + "CREATE OR REPLACE FUNCTION add_product_with_category(varchar, float, integer, varchar, float, float, boolean) RETURNS void AS $$\n"
+            + "--                                                  (title    price  catID    desc     vers   wght )\n"
+            + "CREATE OR REPLACE FUNCTION add_product_with_category(varchar, float, integer, varchar, float, float) RETURNS void AS $$\n"
             + "    INSERT INTO Products (\n"
             + "        ProductTitle,\n"
             + "        ProductPrice,\n"
             + "        ProductCategoryID,\n"
             + "        ProductDescription,\n"
             + "        ProductVersion,\n"
-            + "        ProductWeight,\n"
-            + "        ProductOnSale\n"
-            + "    ) VALUES($1, $2, $3, $4, $5, $6, $7);\n"
+            + "        ProductWeight\n"
+            + "    ) VALUES($1, $2, $3, $4, $5, $6);\n"
             + "$$ LANGUAGE SQL;\n"
             + "\n"
-            + "--                                            (title    price  desc     vers   weight sale   )\n"
-            + "CREATE OR REPLACE FUNCTION add_product_minimal(varchar, float, varchar, float, float, boolean) RETURNS void AS $$\n"
+            + "--                                            (title    price  desc     vers   wght )\n"
+            + "CREATE OR REPLACE FUNCTION add_product_minimal(varchar, float, varchar, float, float) RETURNS void AS $$\n"
             + "    INSERT INTO Products (\n"
             + "        ProductTitle,\n"
             + "        ProductPrice,\n"
             + "        ProductDescription,\n"
             + "        ProductVersion,\n"
-            + "        ProductWeight,\n"
-            + "        ProductOnSale\n"
-            + "    ) VALUES($1, $2, $3, $4, $5, $6);\n"
+            + "        ProductWeight\n"
+            + "    ) VALUES($1, $2, $3, $4, $5);\n"
             + "$$ LANGUAGE SQL;\n"
             + "\n"
             + "--                                             (prodid  catid   )\n"
@@ -761,7 +783,7 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "    SELECT * FROM Products p WHERE p.ProductID = $1;\n"
             + "$$ LANGUAGE SQL;\n"
             + "\n"
-            + "CREATE OR REPLACE FUNCTION get_all_products() RETURNS SET OF Products AS $$\n"
+            + "CREATE OR REPLACE FUNCTION get_all_products() RETURNS SETOF Products AS $$\n"
             + "    SELECT * FROM Products;\n"
             + "$$ LANGUAGE SQL;\n"
             + "\n"
@@ -805,7 +827,7 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "    ) VALUES ($1, $2) RETURNING CategoryID;\n"
             + "$$ LANGUAGE SQL;\n"
             + "\n"
-            + "CREATE OR REPLACE FUNCTION get_all_categories() RETURN SET OF Categories AS $$\n"
+            + "CREATE OR REPLACE FUNCTION get_all_categories() RETURNS SETOF Categories AS $$\n"
             + "    SELECT * FROM Categories;\n"
             + "$$ LANGUAGE SQL;\n"
             + "\n"
@@ -842,10 +864,10 @@ public class BaseJFrame extends javax.swing.JFrame {
             + "        ManufacturerName,\n"
             + "        ManufacturerEmail,\n"
             + "        ManufacturerAddressID\n"
-            + "    ) VALUES ($1, $2, $3, $4) RETURNING ManufacturerID;\n"
+            + "    ) VALUES ($1, $2, $3) RETURNING ManufacturerID;\n"
             + "$$ LANGUAGE SQL;\n"
             + "\n"
-            + "CREATE OR REPLACE FUNCTION get_all_manufacturers() RETURN SET OF Manufacturers AS $$\n"
+            + "CREATE OR REPLACE FUNCTION get_all_manufacturers() RETURNS SETOF Manufacturers AS $$\n"
             + "    SELECT * FROM Manufacturers;\n"
             + "$$ LANGUAGE SQL;";
 }
