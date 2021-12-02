@@ -1,3 +1,5 @@
+-- create triggers for audit tables
+
 CREATE OR REPLACE FUNCTION process_order_audit() RETURNS TRIGGER AS $$
     BEGIN
         IF (TG_OP = 'DELETE') THEN
@@ -117,4 +119,3 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER product_audit
 AFTER INSERT OR UPDATE OR DELETE ON Products
 FOR EACH ROW EXECUTE PROCEDURE process_product_audit();
-
