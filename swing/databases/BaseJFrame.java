@@ -1,4 +1,4 @@
-package databases;
+package swingdemo;
 
 import java.sql.*;
 import java.awt.*;
@@ -6,12 +6,12 @@ import javax.swing.*;
 
 public class BaseJFrame extends javax.swing.JFrame {
 
-    static String driverClassName = "org.postgresql.Driver";
-    static String url = "jdbc:postgresql://localhost:5432/postgres";
-    static Connection dbConnection = null;
-    static String username = "tester";
-    static String passwd = "Apasswd";
-    static Statement statement = null;
+    private static String driverClassName = "org.postgresql.Driver";
+    private static String url = "jdbc:postgresql://localhost:5432/tester";
+    private static Connection dbConnection = null;
+    private static String username = "tester";
+    private static String passwd = "Apasswd";
+    private static Statement statement = null;
 
     private void initDB() {
         try {
@@ -30,11 +30,162 @@ public class BaseJFrame extends javax.swing.JFrame {
             //TODO: properly handle exception
             System.out.println(ex);
         }
+        try {
+            //Create base tables
+            statement.execute(createTablesQuery);
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("c_t exception: " + ex);
+        }
+        try {
+            //Create base tables
+            statement.executeQuery("SELECT create_tables();");
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("select c_t exception: " + ex);
+        }
+        //TODO: fix audit tables (need to embed all fields from base tables)
+        /*
+        try {
+            //Create audit tables
+            statement.execute(createAuditTablesQuery);
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("c_a_t exception: " + ex);
+        }
+        try {
+            //Create audit tables
+            statement.executeQuery("SELECT create_audit_tables();");
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("select c_a_t exception: " + ex);
+        }
+        try {
+            //Create audit triggers
+            statement.execute(createAuditTriggersQuery);
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("c_a_trig exception: " + ex);
+        }
+         */
+        try {
+            //Create stored procedures
+            statement.execute(createStoredProceduresQuery);
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("c_s_p exception: " + ex);
+        }
+        System.out.println("database set up successfully");
+    }
+
+    private String addUser() {
+        try {
+            ResultSet rs = statement.executeQuery("SELECT add_user_get_userid('usr', 'me@example.com', '1234', 'mef', 'mel') as UID;");
+            while (rs.next()) {
+                String uid = rs.getString("UID");
+                System.out.println("a_u_g_u uid: " + uid);
+                return uid;
+            }
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("a_u_g_u exception: " + ex);
+        }
+        return "";
+    }
+
+    private String addAddress(String country, String city, String zip, String address, String phone) {
+        try {
+            ResultSet rs = statement.executeQuery("SELECT add_address_minimal('" + country + "', '" + city + "', '" + zip + "', '" + address + "', '" + phone + "') as AID;");
+            while (rs.next()) {
+                String aid = rs.getString("AID");
+                System.out.println("a_a_m aid: " + aid);
+                return aid;
+            }
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("a_a_m exception: " + ex);
+        }
+        return "";
+    }
+
+    private void addAddressToUser(String uid, String aid) {
+        try {
+            ResultSet rs = statement.executeQuery("SELECT set_user_address('" + uid + "', '" + aid + "');");
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("s_u_a exception: " + ex);
+        }
+    }
+
+    private String userLogin(String nickname, String password) {
+        try {
+            ResultSet rs = statement.executeQuery("SELECT user_login('" + nickname + "', '" + password + "') AS UID;");
+            while (rs.next()) {
+                String uid = rs.getString("UID");
+                //TODO: handle null returned when password is wrong
+                System.out.println("u_l uid: " + uid);
+                return uid;
+            }
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("u_l exception: " + ex);
+        }
+        return "";
+    }
+
+    private void addCategory(String name, String desc) {
+        try {
+            ResultSet rs = statement.executeQuery("SELECT add_category_get_categoryid('" + name + "', '" + desc + "') AS CID;");
+            while (rs.next()) {
+                String cid = rs.getString("CID");
+                //TODO: handle null returned when password is wrong
+                System.out.println("a_c_g_c cid: " + cid);
+            }
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("a_c exception: " + ex);
+        }
+    }
+
+    private void addManufacturer(String name, String email, String address) {
+        try {
+            ResultSet rs = statement.executeQuery("SELECT add_manufacturer_get_manufacturerid('" + name + "', '" + email + "', '" + address + "') AS MID;");
+            while (rs.next()) {
+                String mid = rs.getString("MID");
+                //TODO: handle null returned when password is wrong
+                System.out.println("a_m_g_m mid: " + mid);
+            }
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("a_m_g_m exception: " + ex);
+        }
+    }
+
+    private void addProduct(String title, String price, String desc, String version, String weight) {
+        try {
+            ResultSet rs = statement.executeQuery("SELECT add_product_minimal('" + title + "', " + price + ", '" + desc + "', " + version + ", " + weight + ");");
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("a_p_m exception: " + ex);
+        }
     }
 
     public BaseJFrame() {
-        initComponents();
         initDB();
+        String uid = addUser();
+        if (uid.isEmpty()) {
+            System.out.println("problem adding user");
+        }
+        String aid = addAddress("greece", "thessaloniki", "52525", "melenikou", "6900123456");
+        if (aid.isEmpty()) {
+            System.out.println("problem adding address");
+        }
+        addAddressToUser(uid, aid);
+        uid = userLogin("usr", "1234");
+        addCategory("networking", "routers, switches and more");
+        addManufacturer("maker1", "pr@maker1.gr", "2");
+        addProduct("prodtitle", "50.0", "some prod", "3.2", "0.93");
+        initComponents();
     }
 
     /**
@@ -47,7 +198,7 @@ public class BaseJFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("BookDB");
+        setTitle("EshopDB");
         setMinimumSize(new java.awt.Dimension(400, 300));
         setName("baseFrame"); // NOI18N
 
@@ -97,8 +248,7 @@ public class BaseJFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Image img = new ImageIcon(BaseJFrame.class.getResource("book.png")).getImage();
-                //Image img = new ImageIcon(BaseJFrame.class.getResource("book2.png")).getImage();
+                Image img = new ImageIcon(BaseJFrame.class.getResource("shopping_cart1600.png")).getImage();
                 JFrame f = new BaseJFrame();
                 f.setIconImage(img);
                 f.setVisible(true);
@@ -108,4 +258,13 @@ public class BaseJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+    // Begin query variables
+    // String variables for queries to be used when initializing a new database
+    private static String createTablesQuery = "";
+
+    private static String createAuditTablesQuery = "";
+
+    private static String createAuditTriggersQuery = "";
+
+    private static String createStoredProceduresQuery = "";
 }
