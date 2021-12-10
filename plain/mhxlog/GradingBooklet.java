@@ -15,8 +15,19 @@ public class GradingBooklet {
         this.courseList = courseList;
     }
 
-    public void AddToBooklet(Course course, float grade) {
-        this.courseList.add(course);
-        this.gradeList.add(grade);
+    public GradingBooklet(ArrayList<Course> courseList, ArrayList<Float> gradeList) {
+        this.courseList = courseList;
+        this.gradeList = gradeList;
     }
+
+    public void addToBooklet(Person person, Course course, float grade) {
+        boolean isAdm = person instanceof Administrator;
+        boolean isProf = person instanceof Professor;
+        if (isAdm || isProf) {
+            this.courseList.add(course);
+            this.gradeList.add(grade);
+        }
+    }
+
+    //TODO: add toString
 }
