@@ -78,9 +78,9 @@ public class BaseJFrame extends javax.swing.JFrame {
         System.out.println("database set up successfully");
     }
 
-    private String addUser() {
+    private String addUser(String name, String email, String password, String fname, String lname) {
         try {
-            ResultSet rs = statement.executeQuery("SELECT add_user_get_userid('usr', 'me@example.com', '1234', 'mef', 'mel') as UID;");
+            ResultSet rs = statement.executeQuery("SELECT add_user_get_userid('" + name + "', '" + email + "', '" + password + "', '" + fname + "', '" + lname + "') as UID;");
             while (rs.next()) {
                 String uid = rs.getString("UID");
                 System.out.println("a_u_g_u uid: " + uid);
@@ -170,7 +170,7 @@ public class BaseJFrame extends javax.swing.JFrame {
         }
     }
 
-    private void setupSQL() {
+    private void loadSQL() {
         try {
             String sql = (BaseJFrame.class.getResource("eshopSQL.sql")).getPath();
             Path fn = Path.of(sql);
@@ -209,9 +209,9 @@ public class BaseJFrame extends javax.swing.JFrame {
     }
 
     public BaseJFrame() {
-        setupSQL();
+        loadSQL();
         initDB();
-        String uid = addUser();
+        String uid = addUser("anhel", "daddyinherently@cock.li", "joemomma", "An", "Hel");
         if (uid.isEmpty()) {
             System.out.println("problem adding user");
         }
