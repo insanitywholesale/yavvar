@@ -45,7 +45,6 @@ public class AthinaMhxLog {
                 s.getBooklet().setGradeByCourseID(cid, 8.5);
             }
         }
-
         //US07
         fillProfList(people, profs);
         for (int i = 0; i < people.size(); i++) {
@@ -53,24 +52,18 @@ public class AthinaMhxLog {
             if (p instanceof Student) {
                 Student s = (Student) p;
                 GradingBooklet gb = s.getBooklet();
-                //for (j = 0; j < gb.getChangedList(); j++) {}
+                for (int j = 0; j < gb.getChangedList().size(); j++) {
+                    if (gb.getChangedList().get(i)) {
+                        Course courseList = gb.getCourseList().get(i);
+                        double gradeList = gb.getGradeList().get(i);
+                        boolean finalByProfList = gb.getFinalByProfList().get(i);
+                        boolean changedByProfList = gb.getChangedList().get(i);
+                        boolean finalByAdminList = gb.getFinalByProfList().get(i);
+                        String sid = s.getStudentID();
+                    }
+                }
             }
         }
-
-        /*
-        US06
-        Professor.courseList
-        courseList.getcourseID
-        input studentid
-        people find student with above studentid, get course with courseid, get grade
-        set new grade
-
-        US07
-        get prof
-        get changed gradings
-        show grade with coursename, courseid, studentname, studentid
-        finalize button
-         */
     }
 
 }

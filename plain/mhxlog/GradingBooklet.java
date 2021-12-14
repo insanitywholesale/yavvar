@@ -12,6 +12,7 @@ public class GradingBooklet {
 
     public GradingBooklet() {
         this.courseList = new ArrayList<Course>();
+        this.gradeList = new ArrayList<Double>();
     }
 
     public GradingBooklet(ArrayList<Course> courseList) {
@@ -58,5 +59,24 @@ public class GradingBooklet {
         }
     }
 
-    //TODO: add toString
+    public ArrayList<Boolean> getChangedList() {
+        return changedByProfList;
+    }
+
+    public ArrayList<Course> getCourseList() {
+        return courseList;
+    }
+
+    public ArrayList<Double> getGradeList() {
+        return gradeList;
+    }
+
+    public ArrayList<Boolean> getFinalByProfList() {
+        return finalByProfList;
+    }
+
+    public ArrayList<Boolean> getFinalByAdminList() {
+        return finalByAdminList;
+    }
+
 }
