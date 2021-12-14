@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Administrator extends Person {
 
-    private int adminID;
+    private String adminID;
     //private ArrayList<Person> peopleList;
 
     private void initPeopleList() {
@@ -15,7 +15,7 @@ public class Administrator extends Person {
         initPeopleList();
     }
 
-    public Administrator(int adminID) {//, ArrayList<Person> peopleList) {
+    public Administrator(String adminID) {//, ArrayList<Person> peopleList) {
         this.adminID = adminID;
         //this.peopleList = peopleList;
     }

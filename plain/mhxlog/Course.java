@@ -22,4 +22,7 @@ public class Course {
         this.courseProfessorList = courseProfessorList;
     }
 
+    public String getCourseID() {
+        return courseID;
+    }
 }

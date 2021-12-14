@@ -14,4 +14,8 @@ public class Professor extends Person {
         this.professorID = professorID;
     }
 
+    public ArrayList<Course> getcourseList(Professor p) {
+        return courseList;
+    }
+
 }
