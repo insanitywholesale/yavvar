@@ -3,7 +3,7 @@ package athinamhxlog;
 import java.util.ArrayList;
 import java.util.Collections;
 
-//TODO: switch grade from float to double
+//TODO: login
 public class AthinaMhxLog {
 
     public static void fillProfList(ArrayList<Person> pl, ArrayList<Professor> prl) {
@@ -31,8 +31,8 @@ public class AthinaMhxLog {
         Course crs1 = new Course("1941", "ADISE", 6, 9, new ArrayList<>(Collections.singletonList(prof0)));
         stud0.getBooklet().addToBooklet(adm0, crs0, 8);
         stud0.getBooklet().addToBooklet(adm0, crs1, 9);
+        //US03
         //US06
-        //login
         ArrayList<Course> cL = prof0.getcourseList(prof0);
         String stid = "0";
         String cid = "1742";
