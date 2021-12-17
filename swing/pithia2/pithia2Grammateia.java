@@ -1,21 +1,41 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package ihu.pythia2advanced;
+package pithia2;
 
-/**
- *
- * @author Βασίλης
- */
+import java.util.ArrayList;
+
 public class pithia2Grammateia extends javax.swing.JFrame {
 
-    /**
-     * Creates new form pithia2Grammateia
-     */
+    public static ArrayList<Professor> profList = new ArrayList<Professor>();
+    public static ArrayList<Student> studList = new ArrayList<Student>();
+
+    public static Administrator admin;
+
+    public static void setAdm(Administrator a) {
+        admin = a;
+    }
+
+    public static void fillProfList(ArrayList<Person> pl, ArrayList<Professor> prl) {
+        for (int i = 0; i < pl.size(); i++) {
+            if (pl.get(i) instanceof Professor) {
+                Professor p = (Professor) (pl.get(i));
+                prl.add(p);
+            }
+        }
+    }
+
     public pithia2Grammateia() {
         initComponents();
+        loadProfData();
+    }
+
+    public void loadProfData() {
+        ArrayList<Professor> prl = new ArrayList<Professor>();
+        fillProfList(pithia2Login.people, prl);
+        String[] profNames = new String[prl.size()];
+        for (int i = 0; i < prl.size(); i++) {
+            profNames[i] = prl.get(i).getUsername();
+        }
+        profList = prl;
+        jList2.setListData(profNames);
     }
 
     /**
@@ -50,7 +70,6 @@ public class pithia2Grammateia extends javax.swing.JFrame {
         jLabel7.setText("Κωδικός Μαθήματος");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1604, 711));
 
         kGradientPanel1.setkEndColor(new java.awt.Color(102, 102, 102));
         kGradientPanel1.setkGradientFocus(0);
@@ -61,12 +80,30 @@ public class pithia2Grammateia extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jList1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jList1);
 
         jList2.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
+        });
+        jList2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jList2MouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jList2MouseReleased(evt);
+            }
+        });
+        jList2.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jList2ValueChanged(evt);
+            }
         });
         jScrollPane2.setViewportView(jList2);
 
@@ -188,8 +225,68 @@ public class pithia2Grammateia extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        studList.get(jList1.getSelectedIndex()).getGradingBooklet().setFinalByAdminByCourseID(admin, jLabel4.getText());
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jList2ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList2ValueChanged
+
+    }//GEN-LAST:event_jList2ValueChanged
+
+    private void jList2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList2MouseReleased
+
+    }//GEN-LAST:event_jList2MouseReleased
+
+    private void jList2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList2MouseClicked
+        var idx = jList2.getSelectedIndex();
+        Professor prof = profList.get(idx);
+        var courseStrings = prof.getcourseListIDStrings(prof);
+        var grades = new ArrayList<String>();
+        for (int i = 0; i < pithia2Login.people.size(); i++) {
+            Person p = pithia2Login.people.get(i);
+            if (p instanceof Student) {
+                Student s = (Student) p;
+                GradingBooklet gb = s.getBooklet();
+                for (int j = 0; j < gb.getChangedList().size(); j++) {
+                    //TODO: uncomment below for normal operation
+                    //if (gb.getChangedList().get(i)) {
+                    for (int x = 0; x < courseStrings.length; x++) {
+                        if (gb.getCourseList().get(j).getCourseID().equals(courseStrings[x])) {
+                            studList.add(s);
+                            double grade = gb.getGradeList().get(j);
+                            grades.add("" + grade);
+                        }
+                    }
+                    //}
+                }
+            }
+        }
+        String[] gradeStrings = new String[grades.size()];
+        grades.toArray(gradeStrings);
+        jList1.setListData(gradeStrings);
+    }//GEN-LAST:event_jList2MouseClicked
+
+    private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
+        var idx = jList1.getSelectedIndex();
+        Student stud = studList.get(idx);
+        for (int i = 0; i < pithia2Login.people.size(); i++) {
+            Person p = pithia2Login.people.get(i);
+            if (p instanceof Student) {
+                Student s = (Student) p;
+                GradingBooklet gb = s.getBooklet();
+                for (int j = 0; j < gb.getChangedList().size(); j++) {
+                    //if (gb.getChangedList().get(i)) {
+                    Course course = gb.getCourseList().get(i);
+                    jLabel2.setText(course.getCourseName());
+                    jLabel4.setText(course.getCourseID());
+                    String sid = s.getStudentID();
+                    String sname = s.getUsername();
+                    jLabel1.setText(sname);
+                    jLabel3.setText(sid);
+                    //}
+                }
+            }
+        }
+    }//GEN-LAST:event_jList1MouseClicked
 
     /**
      * @param args the command line arguments

@@ -25,8 +25,13 @@ public class Course {
     public String getCourseID() {
         return courseID;
     }
-    
+
     public String courseToString() {
         return courseID + " " + courseName;
     }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
 }

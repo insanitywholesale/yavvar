@@ -72,6 +72,13 @@ public class GradingBooklet {
             }
         }
     }
+    public void setFinalByAdminByCourseID(Administrator a, String courseID) {
+        for (int i = 0; i < courseList.size(); i++) {
+            if (courseList.get(i).getCourseID().equals(courseID)) {
+                finalByAdminList.set(i, true);
+            }
+        }
+    }
 
     public ArrayList<Boolean> getChangedList() {
         return changedByProfList;

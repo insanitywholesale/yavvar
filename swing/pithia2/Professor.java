@@ -31,6 +31,14 @@ public class Professor extends Person {
         }
         return s;
     }
+    
+    public String[] getcourseListIDStrings(Professor p) {
+        String[] s = new String[courseList.size()];
+        for (int i=0; i<courseList.size();i++) {
+            s[i] = courseList.get(i).getCourseID();
+        }
+        return s;
+    }
 
     public void addCourse(Course c) {
         courseList.add(c);
