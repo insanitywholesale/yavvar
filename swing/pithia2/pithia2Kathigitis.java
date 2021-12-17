@@ -5,10 +5,19 @@
  */
 package pithia2;
 
+import java.util.ArrayList;
+
 public class pithia2Kathigitis extends javax.swing.JFrame {
+
+    String selectedCourseID = "";
 
     public pithia2Kathigitis() {
         initComponents();
+        loadProfData();
+    }
+
+    public void loadProfData() {
+        jListCourse.setListData(pithia2Login.prof0.getcourseListStrings(pithia2Login.prof0));
     }
 
     /**
@@ -21,8 +30,6 @@ public class pithia2Kathigitis extends javax.swing.JFrame {
     private void initComponents() {
 
         kGradientPanel1 = new keeptoo.KGradientPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jListStudent = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
         jListCourse = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
@@ -31,25 +38,23 @@ public class pithia2Kathigitis extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         kGradientPanel2 = new keeptoo.KGradientPanel();
         jButton1 = new javax.swing.JButton();
+        jTextField2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1604, 711));
 
         kGradientPanel1.setkEndColor(new java.awt.Color(102, 102, 102));
         kGradientPanel1.setkGradientFocus(0);
         kGradientPanel1.setkStartColor(new java.awt.Color(255, 255, 255));
 
-        jListStudent.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jListStudent);
-
         jListCourse.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
+        });
+        jListCourse.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jListCourseMouseReleased(evt);
+            }
         });
         jScrollPane3.setViewportView(jListCourse);
 
@@ -75,6 +80,11 @@ public class pithia2Kathigitis extends javax.swing.JFrame {
         jButton1.setText("ΚΑΤΑΧΩΡΗΣΗ");
         jButton1.setBorder(null);
         jButton1.setContentAreaFilled(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout kGradientPanel2Layout = new javax.swing.GroupLayout(kGradientPanel2);
         kGradientPanel2.setLayout(kGradientPanel2Layout);
@@ -87,6 +97,13 @@ public class pithia2Kathigitis extends javax.swing.JFrame {
             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
+        jTextField2.setText("student username");
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout kGradientPanel1Layout = new javax.swing.GroupLayout(kGradientPanel1);
         kGradientPanel1.setLayout(kGradientPanel1Layout);
         kGradientPanel1Layout.setHorizontalGroup(
@@ -94,21 +111,23 @@ public class pithia2Kathigitis extends javax.swing.JFrame {
             .addGroup(kGradientPanel1Layout.createSequentialGroup()
                 .addGap(127, 127, 127)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(kGradientPanel1Layout.createSequentialGroup()
-                        .addGap(193, 193, 193)
-                        .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(kGradientPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(kGradientPanel1Layout.createSequentialGroup()
-                        .addGap(242, 242, 242)
+                        .addGap(635, 635, 635)
                         .addComponent(jLabel3))
                     .addGroup(kGradientPanel1Layout.createSequentialGroup()
-                        .addGap(249, 249, 249)
-                        .addComponent(jLabel1)))
+                        .addGap(77, 77, 77)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(kGradientPanel1Layout.createSequentialGroup()
+                                .addGap(241, 241, 241)
+                                .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextField1)
+                                    .addComponent(kGradientPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(kGradientPanel1Layout.createSequentialGroup()
+                                .addGap(297, 297, 297)
+                                .addComponent(jLabel1)))))
                 .addContainerGap(208, Short.MAX_VALUE))
         );
         kGradientPanel1Layout.setVerticalGroup(
@@ -116,20 +135,24 @@ public class pithia2Kathigitis extends javax.swing.JFrame {
             .addGroup(kGradientPanel1Layout.createSequentialGroup()
                 .addGap(152, 152, 152)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(144, 144, 144)
+                .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(kGradientPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(144, 144, 144))
+                    .addGroup(kGradientPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(kGradientPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(176, 176, 176))
             .addGroup(kGradientPanel1Layout.createSequentialGroup()
                 .addGap(72, 72, 72)
-                .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -146,6 +169,34 @@ public class pithia2Kathigitis extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jListCourseMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListCourseMouseReleased
+        String fullcourse = jListCourse.getSelectedValue();
+        String[] splitcourse = fullcourse.split("\\s+");
+        selectedCourseID = splitcourse[0];
+    }//GEN-LAST:event_jListCourseMouseReleased
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        for (int i = 0; i < pithia2Login.people.size(); i++) {
+            Person p = pithia2Login.people.get(i);
+            boolean isStudent = p instanceof Student;
+            if (isStudent) {
+                Student s = (Student) (p);
+                if (s.getUsername().equals(jTextField2.getText())) {
+                    double oldGrade = s.getBooklet().getGradeByCourseID(selectedCourseID);
+                    jLabel2.setText(oldGrade + "");
+                }
+            }
+        }
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        pithia2Login.stud0.getBooklet().setGradeByCourseID(selectedCourseID, Double.parseDouble(jTextField1.getText()));
+        System.out.println("new course grade: " + pithia2Login.stud0.getBooklet().getGradeByCourseID(selectedCourseID));
+        jTextField2.setText("enter another student name");
+        jLabel2.setText("");
+        jTextField1.setText("");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -188,10 +239,9 @@ public class pithia2Kathigitis extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JList<String> jListCourse;
-    private javax.swing.JList<String> jListStudent;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private keeptoo.KGradientPanel kGradientPanel1;
     private keeptoo.KGradientPanel kGradientPanel2;
     // End of variables declaration//GEN-END:variables

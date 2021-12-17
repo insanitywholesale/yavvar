@@ -1,21 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package ihu.pythia2advanced;
+package pithia2;
 
-/**
- *
- * @author Βασίλης
- */
+import javax.swing.*;
+
 public class pithia2Foititis extends javax.swing.JFrame {
 
-    /**
-     * Creates new form pithia2Foititis
-     */
     public pithia2Foititis() {
         initComponents();
+        loadStudentData();
+    }
+    
+    public void loadStudentData() {
+        jList1.setListData(pithia2Login.stud0.getBooklet().getCoursesAndGrades());
     }
 
     /**

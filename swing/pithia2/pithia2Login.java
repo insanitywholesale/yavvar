@@ -1,19 +1,30 @@
 package pithia2;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class pithia2Login extends javax.swing.JFrame {
 
-    ArrayList<Person> people = new ArrayList<Person>();
-    Person currentUser;
+    public static ArrayList<Person> people = new ArrayList<Person>();
+    public static Person currentUser;
+
+    public static Student stud0;
+    public static Professor prof0;
 
     public pithia2Login() {
         initComponents();
-        Student stud0 = new Student("angle", "fail"); //set stud gradingbooklet
-        Professor prof0 = new Professor("afqr", "fail"); //set prof courselist
+        stud0 = new Student("angle", "fail"); //TODO: set stud gradingbooklet
+        prof0 = new Professor("afqr", "fail"); //TODO: set prof courselist
+        Professor prof1 = new Professor("asdf", "fail"); //TODO: set prof courselist
         Administrator admin0 = new Administrator("power", "fail");
+        Course crs0 = new Course("1742", "Mhx Log", 6, 7, new ArrayList<>(Collections.singletonList(prof0)));
+        Course crs1 = new Course("1941", "ADISE", 6, 9, new ArrayList<>(Collections.singletonList(prof1)));
+        stud0.getBooklet().addToBooklet(admin0, crs0, 8);
+        stud0.getBooklet().addToBooklet(admin0, crs1, 9.1);
+        prof0.addCourse(crs1);
         people.add(stud0);
         people.add(prof0);
+        people.add(prof1);
         people.add(admin0);
     }
 
@@ -90,6 +101,7 @@ public class pithia2Login extends javax.swing.JFrame {
         kGradientPanel4.setkEndColor(new java.awt.Color(78, 82, 82));
         kGradientPanel4.setkStartColor(new java.awt.Color(255, 255, 255));
 
+        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField1.setBorder(null);
         jTextField1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -98,6 +110,7 @@ public class pithia2Login extends javax.swing.JFrame {
             }
         });
 
+        jPasswordField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField1ActionPerformed(evt);

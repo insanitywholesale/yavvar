@@ -13,15 +13,24 @@ public class GradingBooklet {
     public GradingBooklet() {
         this.courseList = new ArrayList<Course>();
         this.gradeList = new ArrayList<Double>();
+        this.finalByProfList = new ArrayList<Boolean>();
+        this.changedByProfList = new ArrayList<Boolean>();
+        this.finalByAdminList = new ArrayList<Boolean>();
     }
 
     public GradingBooklet(ArrayList<Course> courseList) {
         this.courseList = courseList;
+        this.finalByProfList = new ArrayList<Boolean>();
+        this.changedByProfList = new ArrayList<Boolean>();
+        this.finalByAdminList = new ArrayList<Boolean>();
     }
 
     public GradingBooklet(ArrayList<Course> courseList, ArrayList<Double> gradeList) {
         this.courseList = courseList;
         this.gradeList = gradeList;
+        this.finalByProfList = new ArrayList<Boolean>();
+        this.changedByProfList = new ArrayList<Boolean>();
+        this.finalByAdminList = new ArrayList<Boolean>();
     }
 
     public void addToBooklet(Person person, Course course, double grade) {
@@ -30,6 +39,9 @@ public class GradingBooklet {
         if (isAdm || isProf) {
             this.courseList.add(course);
             this.gradeList.add(grade);
+            this.finalByProfList.add(false);
+            this.changedByProfList.add(false);
+            this.finalByAdminList.add(false);
         }
     }
 
@@ -55,6 +67,8 @@ public class GradingBooklet {
         for (int i = 0; i < courseList.size(); i++) {
             if (courseList.get(i).getCourseID().equals(courseID)) {
                 gradeList.set(i, grade);
+                finalByProfList.set(i, true);
+                changedByProfList.set(i, true);
             }
         }
     }
@@ -77,6 +91,14 @@ public class GradingBooklet {
 
     public ArrayList<Boolean> getFinalByAdminList() {
         return finalByAdminList;
+    }
+
+    public String[] getCoursesAndGrades() {
+        String[] s = new String[courseList.size()];
+        for (int i = 0; i < courseList.size(); i++) {
+            s[i] = courseList.get(i).courseToString() + " " + gradeList.get(i);
+        }
+        return s;
     }
 
 }

@@ -19,6 +19,7 @@ public class Student extends Person {
 
     public Student(String username, String password) {
         super(username, password);
+        this.gradingBooklet = new GradingBooklet();
     }
     
     public Student(String studentID, int semester, int ects, float gpa, GradingBooklet gradingBooklet) {
