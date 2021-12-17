@@ -15,10 +15,10 @@ public class pithia2Login extends javax.swing.JFrame {
 
     public pithia2Login() {
         initComponents();
-        Student stud0 = new Student("angle", "fail"); //TODO: set stud gradingbooklet
-        Student stud1 = new Student("itstudent", "fail"); //TODO: set stud gradingbooklet
-        Professor prof0 = new Professor("afqr", "fail"); //TODO: set prof courselist
-        Professor prof1 = new Professor("asdf", "fail"); //TODO: set prof courselist
+        Student stud0 = new Student("angle", "fail");
+        Student stud1 = new Student("itstudent", "fail");
+        Professor prof0 = new Professor("afqr", "fail");
+        Professor prof1 = new Professor("asdf", "fail");
         Administrator admin0 = new Administrator("power", "fail");
         
         Course crs0 = new Course("1742", "Mhx Log", 6, 7, new ArrayList<>(Collections.singletonList(prof0)));

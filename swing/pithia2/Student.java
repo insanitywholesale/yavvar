@@ -22,7 +22,7 @@ public class Student extends Person {
         this.studentID = username + "12345";
         this.gradingBooklet = new GradingBooklet();
     }
-    
+
     public Student(String studentID, int semester, int ects, float gpa, GradingBooklet gradingBooklet) {
         this.studentID = studentID;
         this.semester = semester;
