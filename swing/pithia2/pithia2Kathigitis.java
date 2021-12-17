@@ -17,7 +17,7 @@ public class pithia2Kathigitis extends javax.swing.JFrame {
     }
 
     public void loadProfData() {
-        jListCourse.setListData(pithia2Login.prof0.getcourseListStrings(pithia2Login.prof0));
+        jListCourse.setListData(pithia2Login.currentProfessor.getcourseListStrings(pithia2Login.currentProfessor));
     }
 
     /**
@@ -46,11 +46,6 @@ public class pithia2Kathigitis extends javax.swing.JFrame {
         kGradientPanel1.setkGradientFocus(0);
         kGradientPanel1.setkStartColor(new java.awt.Color(255, 255, 255));
 
-        jListCourse.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jListCourse.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jListCourseMouseReleased(evt);
@@ -191,16 +186,21 @@ public class pithia2Kathigitis extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        pithia2Login.stud0.getBooklet().setGradeByCourseID(selectedCourseID, Double.parseDouble(jTextField1.getText()));
-        System.out.println("new course grade: " + pithia2Login.stud0.getBooklet().getGradeByCourseID(selectedCourseID));
+        Student s = null;
+        for (int i = 0; i < pithia2Login.people.size(); i++) {
+            if (pithia2Login.people.get(i).getUsername().equals(jTextField2.getText()) && pithia2Login.people.get(i) instanceof Student) {
+                s = (Student) pithia2Login.people.get(i);
+            }
+        }
+        if (s != null) {
+            s.getBooklet().setGradeByCourseID(selectedCourseID, Double.parseDouble(jTextField1.getText()));
+            System.out.println("new course grade: " + s.getBooklet().getGradeByCourseID(selectedCourseID));
+        }
         jTextField2.setText("enter another student name");
         jLabel2.setText("");
         jTextField1.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

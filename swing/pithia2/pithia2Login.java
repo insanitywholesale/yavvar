@@ -8,22 +8,31 @@ public class pithia2Login extends javax.swing.JFrame {
     public static ArrayList<Person> people = new ArrayList<Person>();
     public static Person currentUser;
 
-    public static Student stud0;
-    public static Professor prof0;
+    public static Student currentStudent = null;
+    public static Professor currentProfessor = null;
+    public static Administrator adm0;
+    public static Administrator currentAdministrator = null;
 
     public pithia2Login() {
         initComponents();
-        stud0 = new Student("angle", "fail"); //TODO: set stud gradingbooklet
-        prof0 = new Professor("afqr", "fail"); //TODO: set prof courselist
+        Student stud0 = new Student("angle", "fail"); //TODO: set stud gradingbooklet
+        Student stud1 = new Student("itstudent", "fail"); //TODO: set stud gradingbooklet
+        Professor prof0 = new Professor("afqr", "fail"); //TODO: set prof courselist
         Professor prof1 = new Professor("asdf", "fail"); //TODO: set prof courselist
         Administrator admin0 = new Administrator("power", "fail");
+        
         Course crs0 = new Course("1742", "Mhx Log", 6, 7, new ArrayList<>(Collections.singletonList(prof0)));
         Course crs1 = new Course("1941", "ADISE", 6, 9, new ArrayList<>(Collections.singletonList(prof1)));
-        stud0.getBooklet().addToBooklet(admin0, crs0, 8);
+        
         stud0.getBooklet().addToBooklet(admin0, crs1, 9.1);
+        stud1.getBooklet().addToBooklet(admin0, crs0, 6.4);
+        
         prof0.addCourse(crs1);
+        prof1.addCourse(crs0);
+        
         people.add(stud0);
         people.add(prof0);
+        people.add(stud1);
         people.add(prof1);
         people.add(admin0);
     }
@@ -249,16 +258,32 @@ public class pithia2Login extends javax.swing.JFrame {
                     System.out.println("logged in as: " + uname);
                     dispose();
                     if (p instanceof Student) {
+                        for (int j = 0; j < people.size(); j++) {
+                            if (people.get(i).getUsername().equals(uname)) {
+                                currentStudent = (Student) people.get(i);
+                            }
+                        }
                         new pithia2Foititis().setVisible(true);
                     } else if (p instanceof Professor) {
+                        for (int j = 0; j < people.size(); j++) {
+                            if (people.get(i).getUsername().equals(uname)) {
+                                currentProfessor = (Professor) people.get(i);
+                            }
+                        }
                         new pithia2Kathigitis().setVisible(true);
                     } else if (p instanceof Administrator) {
+                        for (int j = 0; j < people.size(); j++) {
+                            if (people.get(i).getUsername().equals(uname)) {
+                                currentAdministrator = (Administrator) people.get(i);
+                            }
+                        }
                         new pithia2Grammateia().setVisible(true);
                     } else {
+                        System.out.println("no idea what you are");
                         //TODO: error popup
                     }
                 } else {
-                    System.out.println("no login 4 u :(");
+                    System.out.println("failed to log in, check username and password");
                     //TODO: error popup
                 }
                 return;

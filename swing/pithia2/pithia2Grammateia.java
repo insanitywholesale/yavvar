@@ -24,7 +24,6 @@ public class pithia2Grammateia extends javax.swing.JFrame {
 
     public pithia2Grammateia() {
         initComponents();
-        jList1.setListData(new String[10]);
         loadProfData();
     }
 
@@ -76,11 +75,6 @@ public class pithia2Grammateia extends javax.swing.JFrame {
         kGradientPanel1.setkGradientFocus(0);
         kGradientPanel1.setkStartColor(new java.awt.Color(255, 255, 255));
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jList1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jList1MouseClicked(evt);
@@ -88,11 +82,6 @@ public class pithia2Grammateia extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jList1);
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jList2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jList2MouseClicked(evt);
@@ -226,7 +215,7 @@ public class pithia2Grammateia extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        studList.get(jList1.getSelectedIndex()).getGradingBooklet().setFinalByAdminByCourseID(admin, jLabel4.getText());
+        studList.get(jList1.getSelectedIndex()).getGradingBooklet().setFinalByAdminByCourseID(pithia2Login.currentAdministrator, jLabel4.getText());
         studList.get(jList1.getSelectedIndex()).getGradingBooklet().printGradingBooklet();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -269,7 +258,6 @@ public class pithia2Grammateia extends javax.swing.JFrame {
 
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
         var idx = jList1.getSelectedIndex();
-        Student stud = studList.get(idx);
         for (int i = 0; i < pithia2Login.people.size(); i++) {
             Person p = pithia2Login.people.get(i);
             if (p instanceof Student) {
@@ -290,9 +278,6 @@ public class pithia2Grammateia extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jList1MouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

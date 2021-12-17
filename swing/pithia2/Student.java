@@ -19,7 +19,7 @@ public class Student extends Person {
 
     public Student(String username, String password) {
         super(username, password);
-        this.studentID = username + "174949";
+        this.studentID = username + "12345";
         this.gradingBooklet = new GradingBooklet();
     }
     

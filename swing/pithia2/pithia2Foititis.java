@@ -10,7 +10,7 @@ public class pithia2Foititis extends javax.swing.JFrame {
     }
     
     public void loadStudentData() {
-        jList1.setListData(pithia2Login.stud0.getBooklet().getCoursesAndGrades());
+        jList1.setListData(pithia2Login.currentStudent.getBooklet().getCoursesAndGrades());
     }
 
     /**
@@ -66,9 +66,6 @@ public class pithia2Foititis extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
