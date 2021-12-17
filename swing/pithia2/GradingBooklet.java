@@ -107,5 +107,11 @@ public class GradingBooklet {
         }
         return s;
     }
+    
+    public void printGradingBooklet() {
+        for (int i = 0; i < courseList.size(); i++) {
+            System.out.println(courseList.get(i).courseToString() + " " + gradeList.get(i) + " " + finalByProfList.get(i) + " " + changedByProfList.get(i) + " " + finalByAdminList.get(i));
+        }
+    }
 
 }

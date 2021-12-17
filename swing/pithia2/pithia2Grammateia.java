@@ -24,6 +24,7 @@ public class pithia2Grammateia extends javax.swing.JFrame {
 
     public pithia2Grammateia() {
         initComponents();
+        jList1.setListData(new String[10]);
         loadProfData();
     }
 
@@ -226,6 +227,7 @@ public class pithia2Grammateia extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         studList.get(jList1.getSelectedIndex()).getGradingBooklet().setFinalByAdminByCourseID(admin, jLabel4.getText());
+        studList.get(jList1.getSelectedIndex()).getGradingBooklet().printGradingBooklet();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jList2ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList2ValueChanged
