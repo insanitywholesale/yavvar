@@ -1,4 +1,6 @@
-package swingdemo;
+package dbeshop;
+
+import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JFrame {
 
@@ -129,6 +131,10 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1FocusLost
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (jTextField1.getText().equals("Username") || jPasswordField1.getText().equals("Password") || jTextField1.getText().equals("") || jPasswordField1.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Συμπληρωστε όλα τα στοιχεία");
+            return;
+        }
         String loginResult = DBUtils.userLogin(jTextField1.getText(), jPasswordField1.getText());
         if (loginResult != "" && loginResult != null) {
             Menu Menu = new Menu();

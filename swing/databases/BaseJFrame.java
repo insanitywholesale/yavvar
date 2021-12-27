@@ -1,9 +1,8 @@
-package swingdemo;
+package dbeshop;
 
 import java.sql.*;
 import java.awt.*;
 import javax.swing.*;
-import java.io.*;
 import java.nio.file.*;
 
 public class BaseJFrame extends javax.swing.JFrame {

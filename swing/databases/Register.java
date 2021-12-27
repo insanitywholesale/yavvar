@@ -1,4 +1,6 @@
-package swingdemo;
+package dbeshop;
+
+import javax.swing.JOptionPane;
 
 public class Register extends javax.swing.JFrame {
 
@@ -21,7 +23,9 @@ public class Register extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(700, 450));
         setMinimumSize(new java.awt.Dimension(700, 450));
+        setPreferredSize(new java.awt.Dimension(700, 450));
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -56,6 +60,11 @@ public class Register extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(102, 255, 255));
         jButton1.setText("Εγγραφή");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 240, 120, 50));
 
         jButton2.setBackground(new java.awt.Color(51, 102, 255));
@@ -119,12 +128,26 @@ public class Register extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Login Login = new Login();
-        Login.setSize(700, 480);
+        Login.setSize(700, 450);
         Login.setVisible(true);
         this.setVisible(false);
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (jTextField1.getText().equals("Εισάγεται Username") || jPasswordField1.getText().equals("Εισάγεται Password") || jTextField1.getText().equals("") || jPasswordField1.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Συμπληρωστε όλα τα στοιχεία");
+        } else {
+            JOptionPane.showMessageDialog(this, "Εγγραφήκατε Επιτυχώς");
+            Login Login = new Login();
+            Login.setSize(700, 450);
+            Login.setVisible(true);
+            this.setVisible(false);
+            this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+            this.dispose();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

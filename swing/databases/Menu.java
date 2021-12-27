@@ -1,6 +1,19 @@
-package swingdemo;
+package dbeshop;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class Menu extends javax.swing.JFrame {
+
+    private String Products[] = {"Asus Gaming Laptop", "Intel Core i7", "AMD Threadripper", "AOC Monitor", "Logitech Sound System", "Playstation 5", "Razer Kraken 7.1"};
+    private int Price[] = {1100, 500, 900, 250, 200, 600, 70};
+    private ImageIcon ASUS = new ImageIcon("asus.jpg");
+    private ImageIcon INT = new ImageIcon("inteli7.jpg");
+    private ImageIcon AMD = new ImageIcon("amd.jpg");
+    private ImageIcon AOC = new ImageIcon("aoc.jpg");
+    private ImageIcon LGT = new ImageIcon("logitech.jpg");
+    private ImageIcon PS5 = new ImageIcon("ps5.jpg");
+    private ImageIcon RZR = new ImageIcon("razer.jpg");
 
     public Menu() {
         initComponents();
@@ -13,8 +26,14 @@ public class Menu extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList(Products);
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jSpinner1 = new javax.swing.JSpinner();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -37,7 +56,23 @@ public class Menu extends javax.swing.JFrame {
                 jTextField1FocusLost(evt);
             }
         });
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 260, 30));
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 280, 30));
+
+        jList1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { " " };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jList1.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jList1ValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jList1);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, 280, 120));
 
         jButton1.setBackground(new java.awt.Color(255, 0, 0));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
@@ -51,7 +86,21 @@ public class Menu extends javax.swing.JFrame {
 
         jButton2.setBackground(new java.awt.Color(0, 255, 0));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/swingdemo/add-to-cart-121-1175545.png"))); // NOI18N
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 350, 100, 80));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 350, 100, 80));
+
+        jButton3.setBackground(new java.awt.Color(255, 153, 0));
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/swingdemo/64673 (1).png"))); // NOI18N
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 10, 40, 30));
+
+        jSpinner1.setValue(1);
+        jPanel1.add(jSpinner1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 270, 50, 40));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setText("Ποσότητα :");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 280, 80, 20));
+
+        jLabel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 130, 120, 120));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/swingdemo/643475.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -86,13 +135,40 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1FocusLost
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JOptionPane.showMessageDialog(this, "Αποσυνδεθήκατε Επιτυχώς");
         Login Login = new Login();
-        Login.setSize(700, 480);
+        Login.setSize(700, 450);
         Login.setVisible(true);
         this.setVisible(false);
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
+        int idx = jList1.getSelectedIndex();
+        String type = Products[idx];
+        if (type == "Asus Gaming Laptop"){
+            jLabel2.setIcon(ASUS);
+        }
+        else if(type == "Intel Core i7"){
+            jLabel2.setIcon(INT);
+        }
+        else if(type == "AMD Threadripper"){
+            jLabel2.setIcon(AMD);
+        }
+        else if(type == "AOC Monitor"){
+            jLabel2.setIcon(AOC);
+        }
+        else if(type == "Logitech Sound System"){
+            jLabel2.setIcon(LGT);
+        }
+        else if(type == "Playstation 5"){
+            jLabel2.setIcon(PS5);
+        }
+        else if(type == "Razer Kraken 7.1"){
+            jLabel2.setIcon(RZR);
+        }
+    }//GEN-LAST:event_jList1ValueChanged
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -129,8 +205,14 @@ public class Menu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
