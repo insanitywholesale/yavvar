@@ -97,7 +97,7 @@ public class Register extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
-        if (jTextField1.getText().equals("Εισάγεται Username")) {
+        if (jTextField1.getText().equals("Εισάγετε Username")) {
             jTextField1.setText("");
             jTextField1.setForeground(new java.awt.Color(1, 1, 1));
         }
@@ -105,13 +105,13 @@ public class Register extends javax.swing.JFrame {
 
     private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
         if (jTextField1.getText().equals("")) {
-            jTextField1.setText("Εισάγεται Username");
+            jTextField1.setText("Εισάγετε Username");
             jTextField1.setForeground(new java.awt.Color(204, 204, 204));
         }
     }//GEN-LAST:event_jTextField1FocusLost
 
     private void jPasswordField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField1FocusGained
-        if (jPasswordField1.getText().equals("Εισάγεται Password")) {
+        if (jPasswordField1.getText().equals("Εισάγετε Password")) {
             jPasswordField1.setText("");
             jPasswordField1.setEchoChar('*');
             jPasswordField1.setForeground(new java.awt.Color(1, 1, 1));
@@ -121,7 +121,7 @@ public class Register extends javax.swing.JFrame {
     private void jPasswordField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField1FocusLost
         if (jPasswordField1.getText().equals("")) {
             jPasswordField1.setEchoChar((char) 0);
-            jPasswordField1.setText("Εισάγεται Password");
+            jPasswordField1.setText("Εισάγετε Password");
             jPasswordField1.setForeground(new java.awt.Color(204, 204, 204));
         }
     }//GEN-LAST:event_jPasswordField1FocusLost
@@ -136,7 +136,7 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (jTextField1.getText().equals("Εισάγεται Username") || jPasswordField1.getText().equals("Εισάγεται Password") || jTextField1.getText().equals("") || jPasswordField1.getText().equals("")) {
+        if (jTextField1.getText().equals("Εισάγετε Username") || jPasswordField1.getText().equals("Εισάγετε Password") || jTextField1.getText().equals("") || jPasswordField1.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Συμπληρωστε όλα τα στοιχεία");
         } else {
             JOptionPane.showMessageDialog(this, "Εγγραφήκατε Επιτυχώς");

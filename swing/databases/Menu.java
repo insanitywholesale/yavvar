@@ -1,21 +1,40 @@
 package dbeshop;
 
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class Menu extends javax.swing.JFrame {
 
-    private String Products[] = {"Asus Gaming Laptop", "Intel Core i7", "AMD Threadripper", "AOC Monitor", "Logitech Sound System", "Playstation 5", "Razer Kraken 7.1"};
+    //private String Products[] = {"Asus Gaming Laptop", "Intel Core i7", "AMD Threadripper", "AOC Monitor", "Logitech Sound System", "Playstation 5", "Razer Kraken 7.1"};
+    private String Products[];
     private int Price[] = {1100, 500, 900, 250, 200, 600, 70};
-    private ImageIcon ASUS = new ImageIcon("asus.jpg");
-    private ImageIcon INT = new ImageIcon("inteli7.jpg");
-    private ImageIcon AMD = new ImageIcon("amd.jpg");
-    private ImageIcon AOC = new ImageIcon("aoc.jpg");
-    private ImageIcon LGT = new ImageIcon("logitech.jpg");
-    private ImageIcon PS5 = new ImageIcon("ps5.jpg");
-    private ImageIcon RZR = new ImageIcon("razer.jpg");
+
+    private ArrayList<String> productNames = new ArrayList<String>();
+    private ArrayList<ImageIcon> productIcons = new ArrayList<ImageIcon>();
+
+    private void loadProductNames() {
+        productNames = DBUtils.getAllProducts();
+        String[] productStrings = new String[productNames.size()];
+        for (int i = 0; i < productNames.size(); i++) {
+            productStrings[i] = productNames.get(i);
+        }
+        Products = productStrings;
+    }
+
+    private void loadProductImages() {
+        productIcons.add(new ImageIcon("inteli7.jpg"));
+        productIcons.add(new ImageIcon("asus.jpg"));
+        productIcons.add(new ImageIcon("amd.jpg"));
+        productIcons.add(new ImageIcon("aoc.jpg"));
+        productIcons.add(new ImageIcon("logitech.jpg"));
+        productIcons.add(new ImageIcon("ps5.jpg"));
+        productIcons.add(new ImageIcon("razer.jpg"));
+    }
 
     public Menu() {
+        loadProductNames();
+        loadProductImages();
         initComponents();
         jPanel1.setFocusable(true);
     }
@@ -48,6 +67,7 @@ public class Menu extends javax.swing.JFrame {
         jTextField1.setForeground(new java.awt.Color(153, 153, 153));
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField1.setText("Αναζήτηση");
+        jTextField1.setEnabled(false);
         jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextField1FocusGained(evt);
@@ -59,11 +79,6 @@ public class Menu extends javax.swing.JFrame {
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 280, 30));
 
         jList1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { " " };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jList1.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -146,28 +161,8 @@ public class Menu extends javax.swing.JFrame {
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
         int idx = jList1.getSelectedIndex();
-        String type = Products[idx];
-        if (type == "Asus Gaming Laptop"){
-            jLabel2.setIcon(ASUS);
-        }
-        else if(type == "Intel Core i7"){
-            jLabel2.setIcon(INT);
-        }
-        else if(type == "AMD Threadripper"){
-            jLabel2.setIcon(AMD);
-        }
-        else if(type == "AOC Monitor"){
-            jLabel2.setIcon(AOC);
-        }
-        else if(type == "Logitech Sound System"){
-            jLabel2.setIcon(LGT);
-        }
-        else if(type == "Playstation 5"){
-            jLabel2.setIcon(PS5);
-        }
-        else if(type == "Razer Kraken 7.1"){
-            jLabel2.setIcon(RZR);
-        }
+        //String type = Products[idx];
+        jLabel2.setIcon(productIcons.get(idx));
     }//GEN-LAST:event_jList1ValueChanged
 
     public static void main(String args[]) {
@@ -184,13 +179,17 @@ public class Menu extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

@@ -5,8 +5,8 @@ import javax.swing.JOptionPane;
 public class Login extends javax.swing.JFrame {
 
     public Login() {
-        initComponents();
         DBUtils.initDB();
+        initComponents();
         jPanel1.setFocusable(true);
         jPasswordField1.setEchoChar((char) 0);
         jPasswordField1.setText("Password");
@@ -25,12 +25,13 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPanel1MouseClicked(evt);
             }
         });
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jTextField1.setForeground(new java.awt.Color(204, 204, 204));
@@ -136,7 +137,7 @@ public class Login extends javax.swing.JFrame {
             return;
         }
         String loginResult = DBUtils.userLogin(jTextField1.getText(), jPasswordField1.getText());
-        if (loginResult != "" && loginResult != null) {
+        if (!"".equals(loginResult) && loginResult != null) {
             Menu Menu = new Menu();
             Menu.setSize(700, 450);
             Menu.setVisible(true);

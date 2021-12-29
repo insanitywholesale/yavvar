@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class DBUtils {
 
@@ -123,7 +124,7 @@ public class DBUtils {
         }
     }
 
-    private String addUser(String name, String email, String password, String fname, String lname) {
+    public static String addUser(String name, String email, String password, String fname, String lname) {
         try {
             ResultSet rs = statement.executeQuery("SELECT add_user_get_userid('" + name + "', '" + email + "', '" + password + "', '" + fname + "', '" + lname + "') as UID;");
             while (rs.next()) {
@@ -138,7 +139,7 @@ public class DBUtils {
         return "";
     }
 
-    private String addAddress(String country, String city, String zip, String address, String phone) {
+    public static String addAddress(String country, String city, String zip, String address, String phone) {
         try {
             ResultSet rs = statement.executeQuery("SELECT add_address_minimal('" + country + "', '" + city + "', '" + zip + "', '" + address + "', '" + phone + "') as AID;");
             while (rs.next()) {
@@ -153,7 +154,7 @@ public class DBUtils {
         return "";
     }
 
-    private void addAddressToUser(String uid, String aid) {
+    public static void addAddressToUser(String uid, String aid) {
         try {
             ResultSet rs = statement.executeQuery("SELECT set_user_address('" + uid + "', '" + aid + "');");
         } catch (SQLException ex) {
@@ -178,7 +179,7 @@ public class DBUtils {
         return "";
     }
 
-    private void addCategory(String name, String desc) {
+    public static void addCategory(String name, String desc) {
         try {
             ResultSet rs = statement.executeQuery("SELECT add_category_get_categoryid('" + name + "', '" + desc + "') AS CID;");
             while (rs.next()) {
@@ -192,7 +193,7 @@ public class DBUtils {
         }
     }
 
-    private void addManufacturer(String name, String email, String address) {
+    public static void addManufacturer(String name, String email, String address) {
         try {
             ResultSet rs = statement.executeQuery("SELECT add_manufacturer_with_address_get_manufacturerid('" + name + "', '" + email + "', '" + address + "') AS MID;");
             while (rs.next()) {
@@ -206,13 +207,29 @@ public class DBUtils {
         }
     }
 
-    private void addProduct(String title, String price, String desc, String version, String weight) {
+    public static void addProduct(String title, String price, String desc, String version, String weight) {
         try {
             ResultSet rs = statement.executeQuery("SELECT add_product_minimal('" + title + "', " + price + ", '" + desc + "', " + version + ", " + weight + ");");
         } catch (SQLException ex) {
             //TODO: properly handle exception
             System.out.println("a_p_m exception: " + ex);
         }
+    }
+
+    public static ArrayList<String> getAllProducts() {
+        ArrayList<String> productNames = new ArrayList<String>();
+        try {
+            ResultSet rs = statement.executeQuery("SELECT get_all_product_titles() AS PT;");
+            while (rs.next()) {
+                String prodTitle = rs.getString("PT");
+                System.out.println("prod_title: " + prodTitle);
+                productNames.add(prodTitle);
+            }
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("g_a_p exception: " + ex);
+        }
+        return productNames;
     }
 }
 
