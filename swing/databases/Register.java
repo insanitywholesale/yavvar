@@ -138,7 +138,9 @@ public class Register extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (jTextField1.getText().equals("Εισάγετε Username") || jPasswordField1.getText().equals("Εισάγετε Password") || jTextField1.getText().equals("") || jPasswordField1.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Συμπληρωστε όλα τα στοιχεία");
-        } else {
+        }
+        String registerResult = DBUtils.addUser(jTextField1.getText(), jTextField1.getText() + "@example.com", jPasswordField1.getText(), jTextField1.getText(), "");
+        if (!"".equals(registerResult) && registerResult != null) {
             JOptionPane.showMessageDialog(this, "Εγγραφήκατε Επιτυχώς");
             Login Login = new Login();
             Login.setSize(700, 450);
@@ -146,6 +148,8 @@ public class Register extends javax.swing.JFrame {
             this.setVisible(false);
             this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
             this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Κάτι πήγε λάθος");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

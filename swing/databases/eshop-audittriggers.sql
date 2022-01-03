@@ -16,7 +16,7 @@ CREATE OR REPLACE FUNCTION process_order_audit() RETURNS TRIGGER AS $$
     END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER order_audit
+CREATE OR REPLACE TRIGGER order_audit
 AFTER INSERT OR UPDATE OR DELETE ON Orders
 FOR EACH ROW EXECUTE PROCEDURE process_order_audit();
 
@@ -36,7 +36,7 @@ CREATE OR REPLACE FUNCTION process_user_audit() RETURNS TRIGGER AS $$
     END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER user_audit
+CREATE OR REPLACE TRIGGER user_audit
 AFTER INSERT OR UPDATE OR DELETE ON Users
 FOR EACH ROW EXECUTE PROCEDURE process_user_audit();
 
@@ -56,7 +56,7 @@ CREATE OR REPLACE FUNCTION process_address_audit() RETURNS TRIGGER AS $$
     END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER address_audit
+CREATE OR REPLACE TRIGGER address_audit
 AFTER INSERT OR UPDATE OR DELETE ON Addresses
 FOR EACH ROW EXECUTE PROCEDURE process_address_audit();
 
@@ -76,7 +76,7 @@ CREATE OR REPLACE FUNCTION process_category_audit() RETURNS TRIGGER AS $$
     END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER category_audit
+CREATE OR REPLACE TRIGGER category_audit
 AFTER INSERT OR UPDATE OR DELETE ON Categories
 FOR EACH ROW EXECUTE PROCEDURE process_category_audit();
 
@@ -96,7 +96,7 @@ CREATE OR REPLACE FUNCTION process_manufacturer_audit() RETURNS TRIGGER AS $$
     END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER manufacturer_audit
+CREATE OR REPLACE TRIGGER manufacturer_audit
 AFTER INSERT OR UPDATE OR DELETE ON Manufacturers
 FOR EACH ROW EXECUTE PROCEDURE process_manufacturer_audit();
 
@@ -116,6 +116,6 @@ CREATE OR REPLACE FUNCTION process_product_audit() RETURNS TRIGGER AS $$
     END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER product_audit
+CREATE OR REPLACE TRIGGER product_audit
 AFTER INSERT OR UPDATE OR DELETE ON Products
 FOR EACH ROW EXECUTE PROCEDURE process_product_audit();

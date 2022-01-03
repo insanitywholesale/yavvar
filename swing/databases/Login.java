@@ -146,9 +146,9 @@ public class Login extends javax.swing.JFrame {
             this.dispose();
             System.out.println("logged in with uid: " + loginResult);
         } else if (loginResult == null) {
-            System.out.println("wrong password");
+            JOptionPane.showMessageDialog(this, "Λάθος στοιχεία");
         } else {
-            System.out.println("empty result");
+            System.out.println("Κάτι πήγε λάθος");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
