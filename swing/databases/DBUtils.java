@@ -22,6 +22,7 @@ public class DBUtils {
     private static String createAuditTablesQuery = "";
     private static String createAuditTriggersQuery = "";
     private static String createStoredProceduresQuery = "";
+    private static String testDataQuery = "";
 
     public static void initDB() {
         loadSQL();
@@ -49,6 +50,7 @@ public class DBUtils {
             System.out.println("c_t exception: " + ex);
         }
         try {
+
             //Create base tables
             statement.executeQuery("SELECT create_tables();");
         } catch (SQLException ex) {
@@ -82,6 +84,13 @@ public class DBUtils {
         } catch (SQLException ex) {
             //TODO: properly handle exception
             System.out.println("c_s_p exception: " + ex);
+        }
+        try {
+            //Load test data
+            statement.execute(testDataQuery);
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("t_d exception: " + ex);
         }
         System.out.println("database set up successfully");
     }
@@ -121,6 +130,13 @@ public class DBUtils {
             createStoredProceduresQuery = Files.readString(fn);
         } catch (Exception ex) {
             System.out.println("file thing fail 5: " + ex);
+        }
+        try {
+            String sql = (BaseJFrame.class.getResource("test-stuff.sql")).getPath();
+            Path fn = Path.of(sql);
+            testDataQuery = Files.readString(fn);
+        } catch (Exception ex) {
+            System.out.println("file thing fail 6: " + ex);
         }
     }
 
@@ -207,9 +223,9 @@ public class DBUtils {
         }
     }
 
-    public static void addProduct(String title, String price, String desc, String version, String weight) {
+    public static void addProduct(String title, String price, String desc, String weight) {
         try {
-            ResultSet rs = statement.executeQuery("SELECT add_product_minimal('" + title + "', " + price + ", '" + desc + "', " + version + ", " + weight + ");");
+            ResultSet rs = statement.executeQuery("SELECT add_product_minimal('" + title + "', " + price + ", '" + desc + "', " + weight + ");");
         } catch (SQLException ex) {
             //TODO: properly handle exception
             System.out.println("a_p_m exception: " + ex);
@@ -231,10 +247,10 @@ public class DBUtils {
         }
         return productNames;
     }
-    
+
     public static String createOrder(String uid) {
         try {
-            ResultSet rs = statement.executeQuery("SELECT create_order_get_orderid('" + uid + "') AS OID;");
+            ResultSet rs = statement.executeQuery("SELECT create_order_get_orderid(" + uid + ") AS OID;");
             while (rs.next()) {
                 String oid = rs.getString("OID");
                 System.out.println("c_o oid: " + oid);
@@ -245,6 +261,14 @@ public class DBUtils {
             System.out.println("c_o exception: " + ex);
         }
         return "";
+    }
+
+    public static void addProductToOrder(String oid, String pid, String qty) {
+        try {
+            ResultSet rs = statement.executeQuery("SELECT add_item_to_order(" + oid + ", " + pid + ", " + qty + ");");
+        } catch (SQLException ex) {
+            System.out.println("a_p_t_o exception: " + ex);
+        }
     }
 }
 

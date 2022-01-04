@@ -1,9 +1,10 @@
 --create audit/log tables and triggers
+--TODO: figure out primary keys
 
 CREATE OR REPLACE FUNCTION create_audit_tables() RETURNS void AS $$
     CREATE TABLE if not exists UserAudit (
         OperationType VARCHAR(1) NOT NULL,
-        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,
+        OperationTimestamp TIMESTAMP NOT NULL,
         OperatorID VARCHAR NOT NULL,
         UserID INTEGER NOT NULL,
         UserNickName VARCHAR NOT NULL,
@@ -16,7 +17,7 @@ CREATE OR REPLACE FUNCTION create_audit_tables() RETURNS void AS $$
     );
     CREATE TABLE if not exists CategoryAudit (
         OperationType VARCHAR(1) NOT NULL,
-        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,
+        OperationTimestamp TIMESTAMP NOT NULL,
         OperatorID VARCHAR NOT NULL,
         CategoryID INTEGER NOT NULL,
         CategoryName VARCHAR NOT NULL,
@@ -24,7 +25,7 @@ CREATE OR REPLACE FUNCTION create_audit_tables() RETURNS void AS $$
     );
     CREATE TABLE if not exists ManufacturerAudit (
         OperationType VARCHAR(1) NOT NULL,
-        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,
+        OperationTimestamp TIMESTAMP NOT NULL,
         OperatorID VARCHAR NOT NULL,
         ManufacturerID INTEGER NOT NULL,
         ManufacturerName VARCHAR NOT NULL,
@@ -33,7 +34,7 @@ CREATE OR REPLACE FUNCTION create_audit_tables() RETURNS void AS $$
     );
     CREATE TABLE if not exists ProductAudit (
         OperationType VARCHAR(1) NOT NULL,
-        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,
+        OperationTimestamp TIMESTAMP NOT NULL,
         OperatorID VARCHAR NOT NULL,
         ProductID INTEGER NOT NULL,
         ProductTitle VARCHAR NOT NULL,
@@ -48,7 +49,7 @@ CREATE OR REPLACE FUNCTION create_audit_tables() RETURNS void AS $$
     );
     CREATE TABLE if not exists OrderAudit (
         OperationType VARCHAR(1) NOT NULL,
-        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,
+        OperationTimestamp TIMESTAMP NOT NULL,
         OperatorID VARCHAR NOT NULL,
         OrderID INTEGER NOT NULL,
         OrderUserID INTEGER NOT NULL,
@@ -65,7 +66,7 @@ CREATE OR REPLACE FUNCTION create_audit_tables() RETURNS void AS $$
     );
     CREATE TABLE if not exists AddressAudit (
         OperationType VARCHAR(1) NOT NULL,
-        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,
+        OperationTimestamp TIMESTAMP NOT NULL,
         OperatorID VARCHAR NOT NULL,
         AddressID INTEGER NOT NULL,
         AddressCountry VARCHAR NOT NULL,
@@ -79,7 +80,7 @@ CREATE OR REPLACE FUNCTION create_audit_tables() RETURNS void AS $$
 
     CREATE TABLE if not exists OrderedProductsAudit (
         OperationType VARCHAR(1) NOT NULL,
-        OperationTimestamp TIMESTAMP PRIMARY KEY NOT NULL,
+        OperationTimestamp TIMESTAMP NOT NULL,
         OperatorID VARCHAR NOT NULL,
         OrderedProductID INTEGER NOT NULL,
         OrderID INTEGER NOT NULL,

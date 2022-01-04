@@ -10,7 +10,7 @@ public class Menu extends javax.swing.JFrame {
     private String Products[];
     private ArrayList<String> productNames = new ArrayList<String>();
     private ArrayList<ImageIcon> productIcons = new ArrayList<ImageIcon>();
-    private String orderID;
+    private String orderID = "";
 
     private void loadProductNames() {
         productNames = DBUtils.getAllProducts();
@@ -170,8 +170,9 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jList1ValueChanged
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //create order
-        DBUtils.createOrder(Login.uid);
+        if (!"".equals(Login.uid) && Login.uid != null && "".equalsIgnoreCase(orderID)) {
+            orderID = DBUtils.createOrder(Login.uid);
+        }
         //TODO: implement
     }//GEN-LAST:event_jButton2ActionPerformed
 

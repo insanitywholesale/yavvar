@@ -196,15 +196,14 @@ CREATE OR REPLACE FUNCTION add_product_with_category(varchar, float, integer, va
     ) VALUES($1, $2, $3, $4, $5, $6);
 $$ LANGUAGE SQL;
 
---                                            (title    price  desc     vers   wght )
-CREATE OR REPLACE FUNCTION add_product_minimal(varchar, float, varchar, float, float) RETURNS void AS $$
+--                                            (title    price  desc     wght )
+CREATE OR REPLACE FUNCTION add_product_minimal(varchar, float, varchar, float) RETURNS void AS $$
     INSERT INTO Products (
         ProductTitle,
         ProductPrice,
         ProductDescription,
-        ProductVersion,
         ProductWeight
-    ) VALUES($1, $2, $3, $4, $5);
+    ) VALUES($1, $2, $3, $4);
 $$ LANGUAGE SQL;
 
 --                                             (prodid  catid   )
