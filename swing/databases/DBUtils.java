@@ -231,6 +231,21 @@ public class DBUtils {
         }
         return productNames;
     }
+    
+    public static String createOrder(String uid) {
+        try {
+            ResultSet rs = statement.executeQuery("SELECT create_order_get_orderid('" + uid + "') AS OID;");
+            while (rs.next()) {
+                String oid = rs.getString("OID");
+                System.out.println("c_o oid: " + oid);
+                return oid;
+            }
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("c_o exception: " + ex);
+        }
+        return "";
+    }
 }
 
 //EXAMPLES

@@ -4,6 +4,8 @@ import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JFrame {
 
+    public static String uid;
+
     public Login() {
         DBUtils.initDB();
         initComponents();
@@ -144,6 +146,7 @@ public class Login extends javax.swing.JFrame {
             this.setVisible(false);
             this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
             this.dispose();
+            uid = loginResult;
             System.out.println("logged in with uid: " + loginResult);
         } else if (loginResult == null) {
             JOptionPane.showMessageDialog(this, "Λάθος στοιχεία");

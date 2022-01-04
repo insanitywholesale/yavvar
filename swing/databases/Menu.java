@@ -8,10 +8,9 @@ public class Menu extends javax.swing.JFrame {
 
     //private String Products[] = {"Asus Gaming Laptop", "Intel Core i7", "AMD Threadripper", "AOC Monitor", "Logitech Sound System", "Playstation 5", "Razer Kraken 7.1"};
     private String Products[];
-    private int Price[] = {1100, 500, 900, 250, 200, 600, 70};
-
     private ArrayList<String> productNames = new ArrayList<String>();
     private ArrayList<ImageIcon> productIcons = new ArrayList<ImageIcon>();
+    private String orderID;
 
     private void loadProductNames() {
         productNames = DBUtils.getAllProducts();
@@ -101,6 +100,11 @@ public class Menu extends javax.swing.JFrame {
 
         jButton2.setBackground(new java.awt.Color(0, 255, 0));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/swingdemo/add-to-cart-121-1175545.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 350, 100, 80));
 
         jButton3.setBackground(new java.awt.Color(255, 153, 0));
@@ -164,6 +168,12 @@ public class Menu extends javax.swing.JFrame {
         //String type = Products[idx];
         jLabel2.setIcon(productIcons.get(idx));
     }//GEN-LAST:event_jList1ValueChanged
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        //create order
+        DBUtils.createOrder(Login.uid);
+        //TODO: implement
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
