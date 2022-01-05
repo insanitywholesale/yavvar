@@ -6,7 +6,6 @@ import javax.swing.JOptionPane;
 
 public class Menu extends javax.swing.JFrame {
 
-    //private String Products[] = {"Asus Gaming Laptop", "Intel Core i7", "AMD Threadripper", "AOC Monitor", "Logitech Sound System", "Playstation 5", "Razer Kraken 7.1"};
     private String Products[];
     static ArrayList<String> productNames = new ArrayList<String>();
     private ArrayList<ImageIcon> productIcons = new ArrayList<ImageIcon>();
