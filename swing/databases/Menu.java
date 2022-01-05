@@ -8,12 +8,15 @@ public class Menu extends javax.swing.JFrame {
 
     //private String Products[] = {"Asus Gaming Laptop", "Intel Core i7", "AMD Threadripper", "AOC Monitor", "Logitech Sound System", "Playstation 5", "Razer Kraken 7.1"};
     private String Products[];
-    private ArrayList<String> productNames = new ArrayList<String>();
+    static ArrayList<String> productNames = new ArrayList<String>();
     private ArrayList<ImageIcon> productIcons = new ArrayList<ImageIcon>();
     private String orderID = "";
+    private ArrayList<Product> products;
+    static ArrayList<Product> orderedProducts;
 
     private void loadProductNames() {
-        productNames = DBUtils.getAllProducts();
+        products = DBUtils.getAllProducts();
+        productNames = DBUtils.getAllProductNames();
         String[] productStrings = new String[productNames.size()];
         for (int i = 0; i < productNames.size(); i++) {
             productStrings[i] = productNames.get(i);
@@ -50,6 +53,9 @@ public class Menu extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jSpinner1 = new javax.swing.JSpinner();
+        jButton4 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -73,6 +79,11 @@ public class Menu extends javax.swing.JFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTextField1FocusLost(evt);
+            }
+        });
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
             }
         });
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 280, 30));
@@ -109,10 +120,30 @@ public class Menu extends javax.swing.JFrame {
 
         jButton3.setBackground(new java.awt.Color(255, 153, 0));
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/swingdemo/64673 (1).png"))); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 10, 40, 30));
 
         jSpinner1.setValue(1);
         jPanel1.add(jSpinner1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 270, 50, 40));
+
+        jButton4.setText("Προβολή Παραγγελίας");
+        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, -1, 30));
+
+        jLabel5.setText("0.00");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 340, -1, -1));
+
+        jLabel4.setText("Τιμή:");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 340, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("Ποσότητα :");
@@ -165,16 +196,47 @@ public class Menu extends javax.swing.JFrame {
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
         int idx = jList1.getSelectedIndex();
-        //String type = Products[idx];
-        jLabel2.setIcon(productIcons.get(idx));
+        if (idx == -1) {
+            jLabel2.setIcon(null);
+        } else {
+            jLabel2.setIcon(productIcons.get(idx));
+            jLabel5.setText(products.get(idx).getPrice());
+        }
     }//GEN-LAST:event_jList1ValueChanged
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (!"".equals(Login.uid) && Login.uid != null && "".equalsIgnoreCase(orderID)) {
             orderID = DBUtils.createOrder(Login.uid);
+            orderedProducts = new ArrayList<>();
         }
-        //TODO: implement
+        //the +1 is because idx has starting value of 0 while product_id starts from 1
+        int selectedIndex = jList1.getSelectedIndex() + 1;
+        String pid = Integer.toString(selectedIndex);
+        DBUtils.addProductToOrder(orderID.toString(), pid, jSpinner1.getValue().toString());
+        Product p = products.get(jList1.getSelectedIndex());
+        p.setQty(Integer.parseInt(jSpinner1.getValue().toString()));
+        orderedProducts.add(p);
+        jSpinner1.setValue(1);
+        jList1.clearSelection();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        JOptionPane.showMessageDialog(this, "Η αναζήτηση δεν λειτουργεί σε αυτή την έκδοση της εφαρμογής");
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        JOptionPane.showMessageDialog(this, "Η αναζήτηση δεν λειτουργεί σε αυτή την έκδοση της εφαρμογής");
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        if (orderedProducts == null) {
+            JOptionPane.showMessageDialog(this, "Δέν έχετε προσθέσει κάτι στο καλάθι σας");
+        } else {
+            Order order = new Order();
+            order.setSize(700, 450);
+            order.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -216,13 +278,17 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
 }

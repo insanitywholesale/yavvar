@@ -151,7 +151,7 @@ public class Login extends javax.swing.JFrame {
         } else if (loginResult == null) {
             JOptionPane.showMessageDialog(this, "Λάθος στοιχεία");
         } else {
-            System.out.println("Κάτι πήγε λάθος");
+            JOptionPane.showMessageDialog(this, "Κάτι πήγε λάθος");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

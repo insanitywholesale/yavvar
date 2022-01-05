@@ -232,7 +232,7 @@ public class DBUtils {
         }
     }
 
-    public static ArrayList<String> getAllProducts() {
+    public static ArrayList<String> getAllProductNames() {
         ArrayList<String> productNames = new ArrayList<String>();
         try {
             ResultSet rs = statement.executeQuery("SELECT get_all_product_titles() AS PT;");
@@ -243,9 +243,32 @@ public class DBUtils {
             }
         } catch (SQLException ex) {
             //TODO: properly handle exception
-            System.out.println("g_a_p exception: " + ex);
+            System.out.println("g_a_p_n exception: " + ex);
         }
         return productNames;
+    }
+    
+    public static ArrayList<Product> getAllProducts() {
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            //TODO: it works but this is sub-optimal at best
+            ResultSet rst = dbConnection.createStatement().executeQuery("SELECT get_all_product_titles() AS PT;");
+            ResultSet rsp = dbConnection.createStatement().executeQuery("SELECT get_all_product_prices() AS PP;");
+            ResultSet rsd = dbConnection.createStatement().executeQuery("SELECT get_all_product_descs() AS PD;");
+            ResultSet rsw = dbConnection.createStatement().executeQuery("SELECT get_all_product_weights() AS PW;");
+            while (rst.next() && rsp.next() && rsd.next() && rsw.next()) {
+                String pt = rst.getString("PT");
+                String pp = rsp.getString("PP");
+                String pd = rsd.getString("PD");
+                String pw = rsw.getString("PW");
+                Product p = new Product(pt, pp, pd, pw);
+                products.add(p);
+            }
+        } catch (SQLException ex) {
+            //TODO: properly handle exception
+            System.out.println("g_a_p exception: " + ex);
+        }
+        return products;
     }
 
     public static String createOrder(String uid) {

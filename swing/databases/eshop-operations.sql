@@ -233,6 +233,18 @@ CREATE OR REPLACE FUNCTION get_all_product_titles() RETURNS SETOF VARCHAR AS $$
     SELECT ProductTitle FROM Products;
 $$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION get_all_product_prices() RETURNS SETOF FLOAT AS $$
+    SELECT ProductPrice FROM Products;
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION get_all_product_descs() RETURNS SETOF VARCHAR AS $$
+    SELECT ProductDescription FROM Products;
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION get_all_product_weights() RETURNS SETOF FLOAT AS $$
+    SELECT ProductWeight FROM Products;
+$$ LANGUAGE SQL;
+
 CREATE OR REPLACE FUNCTION assign_weight_class() RETURNS void AS $$
     UPDATE Products
     SET ProductWeightClass = 5
