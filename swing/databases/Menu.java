@@ -243,6 +243,9 @@ public class Menu extends javax.swing.JFrame {
             Order order = new Order();
             order.setSize(700, 450);
             order.setVisible(true);
+            this.setVisible(false);
+            this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+            this.dispose();
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

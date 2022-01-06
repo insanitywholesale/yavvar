@@ -8,7 +8,7 @@ public class Register extends javax.swing.JFrame {
         initComponents();
         jPanel1.setFocusable(true);
         jPasswordField1.setEchoChar((char) 0);
-        jPasswordField1.setText("Εισάγεται Password");
+        jPasswordField1.setText("Εισάγετε Password");
     }
 
     @SuppressWarnings("unchecked")
@@ -23,16 +23,14 @@ public class Register extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(700, 450));
         setMinimumSize(new java.awt.Dimension(700, 450));
-        setPreferredSize(new java.awt.Dimension(700, 450));
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jTextField1.setForeground(new java.awt.Color(204, 204, 204));
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField1.setText("Εισάγεται Username");
+        jTextField1.setText("Εισάγετε Username");
         jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextField1FocusGained(evt);

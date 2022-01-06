@@ -10,14 +10,14 @@ public class Order extends javax.swing.JFrame {
     }
 
     private void loadOrderedProductsNames() {
-        double sum = 0;
+        double sum = 0.00;
         String[] opn = new String[Menu.productNames.size()];
         for (int i = 0; i < Menu.orderedProducts.size(); i++) {
             opn[i] = Menu.orderedProducts.get(i).getTitle();
             sum += Double.parseDouble(Menu.orderedProducts.get(i).getPrice()) * Menu.orderedProducts.get(i).getQty();
         }
         jList1.setListData(opn);
-        jLabel4.setText(String.valueOf(sum));
+        jLabel4.setText(String.format("%2f", sum));
     }
 
     @SuppressWarnings("unchecked")
@@ -84,16 +84,21 @@ public class Order extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Menu menu = new Menu();
+        menu.setSize(700, 450);
+        menu.setVisible(true);
+        this.setVisible(false);
+        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         DBUtils.finalizeOrder(Menu.orderID);
         JOptionPane.showMessageDialog(this, "Σας ευχαριστούμε για την προτίμηση, η παραγγελία σας είναι καθοδόν");
-        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {
