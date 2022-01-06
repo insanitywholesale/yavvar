@@ -11,7 +11,7 @@ public class Menu extends javax.swing.JFrame {
     private ArrayList<ImageIcon> productIcons = new ArrayList<>();
     static String orderID = "";
     private ArrayList<Product> products;
-    static ArrayList<Product> orderedProducts;
+    public static ArrayList<Product> orderedProducts = new ArrayList<>();
 
     private void loadProductNames() {
         products = DBUtils.getAllProducts();
@@ -21,6 +21,10 @@ public class Menu extends javax.swing.JFrame {
             productStrings[i] = productNames.get(i);
         }
         Products = productStrings;
+    }
+
+    private boolean isNumeric(String str) {
+        return str != null && str.matches("[-+]?\\d*\\.?\\d+");
     }
 
     private void loadProductImages() {
@@ -127,6 +131,11 @@ public class Menu extends javax.swing.JFrame {
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 10, 40, 30));
 
         jSpinner1.setValue(1);
+        jSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinner1StateChanged(evt);
+            }
+        });
         jPanel1.add(jSpinner1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 270, 50, 40));
 
         jButton4.setText("Προβολή Παραγγελίας");
@@ -206,7 +215,6 @@ public class Menu extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (!"".equals(Login.uid) && Login.uid != null && "".equalsIgnoreCase(orderID)) {
             orderID = DBUtils.createOrder(Login.uid);
-            orderedProducts = new ArrayList<>();
         }
         //the +1 is because idx has starting value of 0 while product_id starts from 1
         int selectedIndex = jList1.getSelectedIndex() + 1;
@@ -217,6 +225,7 @@ public class Menu extends javax.swing.JFrame {
         orderedProducts.add(p);
         jSpinner1.setValue(1);
         jList1.clearSelection();
+        jLabel5.setText("0.00");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -228,7 +237,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if (orderedProducts == null) {
+        if (orderedProducts.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Δέν έχετε προσθέσει κάτι στο καλάθι σας");
         } else {
             Order order = new Order();
@@ -236,6 +245,16 @@ public class Menu extends javax.swing.JFrame {
             order.setVisible(true);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
+        String s = jSpinner1.getValue().toString();
+        if (!isNumeric(s)) {
+            JOptionPane.showMessageDialog(this, "Η ποσότητα πρέπει να έιναι αριθμός");
+        } else {
+            int qty = Integer.parseInt(s);
+            jLabel5.setText(String.valueOf(Double.parseDouble(jLabel5.getText()) * qty));
+        }
+    }//GEN-LAST:event_jSpinner1StateChanged
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

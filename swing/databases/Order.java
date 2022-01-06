@@ -5,8 +5,8 @@ import javax.swing.JOptionPane;
 public class Order extends javax.swing.JFrame {
 
     public Order() {
-        loadOrderedProductsNames();
         initComponents();
+        loadOrderedProductsNames();
     }
 
     private void loadOrderedProductsNames() {
@@ -92,6 +92,8 @@ public class Order extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         DBUtils.finalizeOrder(Menu.orderID);
+        JOptionPane.showMessageDialog(this, "Σας ευχαριστούμε για την προτίμηση, η παραγγελία σας είναι καθοδόν");
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {
