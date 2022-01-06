@@ -8,8 +8,8 @@ public class Menu extends javax.swing.JFrame {
 
     private String Products[];
     static ArrayList<String> productNames = new ArrayList<String>();
-    private ArrayList<ImageIcon> productIcons = new ArrayList<ImageIcon>();
-    private String orderID = "";
+    private ArrayList<ImageIcon> productIcons = new ArrayList<>();
+    static String orderID = "";
     private ArrayList<Product> products;
     static ArrayList<Product> orderedProducts;
 

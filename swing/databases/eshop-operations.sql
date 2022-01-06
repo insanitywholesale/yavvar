@@ -145,8 +145,9 @@ $$ LANGUAGE SQL;
 --                                       (orderid)
 CREATE OR REPLACE FUNCTION finalize_order(integer) RETURNS void AS $$
     UPDATE Orders
-    SET OrderIsFinal = TRUE
-    WHERE OrderID = $1 AND OrderBillingAddressID IS NOT NULL AND OrderShippingAddressID IS NOT NULL;
+    SET OrderIsFinal = TRUE;
+    --TODO: uncomment when GUI supports adding addresses
+    --WHERE OrderID = $1 AND OrderBillingAddressID IS NOT NULL AND OrderShippingAddressID IS NOT NULL;
 $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION get_shipped_orders() RETURNS SETOF Orders AS $$
@@ -229,6 +230,7 @@ CREATE OR REPLACE FUNCTION get_all_products() RETURNS SETOF Products AS $$
     SELECT * FROM Products;
 $$ LANGUAGE SQL;
 
+--TODO: replace with custom type (e.g. ProductMinimal)
 CREATE OR REPLACE FUNCTION get_all_product_titles() RETURNS SETOF VARCHAR AS $$
     SELECT ProductTitle FROM Products;
 $$ LANGUAGE SQL;

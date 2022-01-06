@@ -64,6 +64,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="&#x3a5;&#x3c0;&#x3bf;&#x3b2;&#x3bf;&#x3bb;&#x3ae; &#x3a0;&#x3b1;&#x3c1;&#x3b1;&#x3b3;&#x3b3;&#x3b5;&#x3bb;&#x3af;&#x3b1;&#x3c2;"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="520" y="410" width="-1" height="-1"/>

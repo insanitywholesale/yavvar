@@ -247,7 +247,7 @@ public class DBUtils {
         }
         return productNames;
     }
-    
+
     public static ArrayList<Product> getAllProducts() {
         ArrayList<Product> products = new ArrayList<>();
         try {
@@ -291,6 +291,14 @@ public class DBUtils {
             ResultSet rs = statement.executeQuery("SELECT add_item_to_order(" + oid + ", " + pid + ", " + qty + ");");
         } catch (SQLException ex) {
             System.out.println("a_p_t_o exception: " + ex);
+        }
+    }
+
+    public static void finalizeOrder(String oid) {
+        try {
+            ResultSet rs = statement.executeQuery("SELECT finalize_order(" + oid + ");");
+        } catch (SQLException ex) {
+            System.out.println("f_o exception: " + ex);
         }
     }
 }
