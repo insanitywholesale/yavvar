@@ -22,6 +22,9 @@ public class Foititis {
         AA++;
         DecimalFormat mf = new DecimalFormat("0000");
         this.AM = (etosEisagwgis + mf.format(AA));
+        Random rant = new Random();
+        this.thlefwno = String.valueOf(rant.nextInt(1000000));
+        this.mesosOros = rant.nextFloat() * 10;
     }
 
     public Foititis(String onomatEpwnymo, Date hmeromGennisis, int etosEisagwgis, String thlefwno, float mesosOros) {
