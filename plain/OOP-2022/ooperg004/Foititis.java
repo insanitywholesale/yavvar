@@ -26,8 +26,24 @@ public class Foititis {
         this.hmeromGennisis = hmeromGennisis;
     }
 
+    public String getOnomatEpwnymo() {
+        return onomatEpwnymo;
+    }
+
+    public String getEpwnymo() {
+        return onomatEpwnymo.split("\\s+")[1];
+    }
+
+    public Date getHmeromGennisis() {
+        return hmeromGennisis;
+    }
+
+    public String getAM() {
+        return AM;
+    }
+
     @Override
     public String toString() {
-        return (AM + " " + onomatEpwnymo + " ");
+        return (AM + " " + onomatEpwnymo + " " + hmeromGennisis + " ");
     }
 }

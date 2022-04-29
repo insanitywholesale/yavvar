@@ -41,6 +41,40 @@ public class OOPErg004 {
             }
             System.out.println(students[i]);
         }
+
+        boolean exit = false;
+        Scanner scan = new Scanner(System.in);
+        int choice;
+
+        do {
+            printMainMenu();
+            choice = Integer.parseInt(scan.nextLine());
+            switch (choice) {
+                case 0:
+                    exit = true;
+                    break;
+                case 1:
+                    anazitisiMeEpwnymo(students);
+                    break;
+                case 2:
+                    anazitisiMeHmeromGennisis(students);
+                    break;
+                case 3:
+                    anazitisiMeAM(students);
+                    break;
+                default:
+                    System.out.println("επελεξε αριθμο απο 0 εως και 2");
+                    break;
+            }
+        } while (!exit);
+
+    }
+
+    public static void printMainMenu() {
+        System.out.print("1) Αναζήτηση με Επώνυμο\n"
+                + "2) Αναζήτηση με Ημερ/νία γέννησης\n"
+                + "3) Αναζήτηση με ΑΜ (δυαδική)\n"
+                + "0) Εξοδος");
     }
 
     public static Date inHmeromGennisis() {
@@ -59,5 +93,117 @@ public class OOPErg004 {
             System.out.println(ex);
         }
         return hmerom;
+    }
+
+    public static int anazitisiMeEpwnymo(Foititis[] students) {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("εισαγετε επωνυμο για αναζητηση: ");
+        String lastName = scan.nextLine();
+        Foititis[] results = lastnameSearch(lastName, students);
+        for (int i = 0; i < results.length; i++) {
+            System.out.println(results[i]);
+        }
+        if (results.length <= 0) {
+            return -1;
+        } else {
+            return results.length;
+        }
+    }
+
+    public static Foititis[] lastnameSearch(String lastName, Foititis[] students) {
+        ArrayList<Foititis> results = new ArrayList<Foititis>();
+        for (int i = 0; i < students.length; i++) {
+            if (students[i].getEpwnymo().equals(lastName)) {
+                results.add(students[i]);
+            }
+        }
+        return (Foititis[]) results.toArray();
+    }
+
+    public static int anazitisiMeHmeromGennisis(Foititis[] students) {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("εισαγετε ημερ/νία γέννησης για αναζητηση: ");
+        String dateStr = scan.nextLine();
+        Date date = convertStrToDate(dateStr);
+        Foititis[] results = dateSearch(date, students);
+        for (int i = 0; i < results.length; i++) {
+            System.out.println(results[i]);
+        }
+        if (results.length <= 0) {
+            return -1;
+        } else {
+            return results.length;
+        }
+    }
+
+    public static Foititis[] dateSearch(Date date, Foititis[] students) {
+        ArrayList<Foititis> results = new ArrayList<Foititis>();
+        for (int i = 0; i < students.length; i++) {
+            if (students[i].getHmeromGennisis() == date) {
+                results.add(students[i]);
+            }
+        }
+        return (Foititis[]) results.toArray();
+    }
+
+    public static void anazitisiMeAM(Foititis[] students) {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("εισαγετε αριθμο μητρωου για αναζητηση: ");
+        String AM = scan.nextLine();
+        Foititis[] sortedStudents = sortStudents(students);
+    }
+
+    public static Foititis[] sortStudents(Foititis[] students) {
+        int f = Integer.parseInt(students[0].getAM()); //TODO: idk if this is correct
+        int l = Integer.parseInt(students[students.length - 1].getAM()); //TODO: idk if this is correct
+        Foititis[] results = mSortStudents(students, f, l);
+        for (int i = 0; i < results.length; i++) { //TODO: comment out printing loop when done debugging
+            System.out.println(results[i]);
+        }
+        return results;
+    }
+
+    //TODO: probably wrong
+    public static Foititis[] mSortStudents(Foititis[] students, int f, int l) {
+        if (f == l) {
+            return students;
+        }
+        int mid = f + l / 2;
+        Foititis[] sortedhalf1 = mSortStudents(students, f, mid);
+        Foititis[] sortedhalf2 = mSortStudents(students, mid + 1, l);
+        return mergeStudents(sortedhalf1, sortedhalf2);
+    }
+
+    public static Foititis[] mergeStudents(Foititis[] f1, Foititis[] f2) {
+        int l1 = f1.length;
+        int l2 = f2.length;
+        Foititis[] results = new Foititis[l1 + l2];
+        System.arraycopy(f1, 0, results, 0, l1);
+        System.arraycopy(f2, 0, results, l1, l2);
+        return results;
+    }
+
+    //TODO: 99% chance it's wrong
+    public static int binSearch(Foititis[] arr, Foititis key, Foititis left, Foititis right) {
+        int mid = -1;
+        int pos = -1;
+        int l = Integer.parseInt(left.getAM());
+        int r = Integer.parseInt(right.getAM());
+        int k = Integer.parseInt(key.getAM());
+
+        int arrmid = Integer.parseInt(arr[mid].getAM());
+
+        while (pos == -1 && l <= r) {
+            mid = (l + r) / 2;
+            arrmid = Integer.parseInt(arr[mid].getAM());
+            if (k < arrmid) {
+                r = mid - 1;
+            } else if (k > arrmid) {
+                l = mid + 1;
+            } else {
+                pos = mid;
+            }
+        }
+        return pos;
     }
 }
