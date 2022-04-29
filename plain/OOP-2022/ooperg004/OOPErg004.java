@@ -35,10 +35,10 @@ public class OOPErg004 {
         System.out.println("=== Εισαγωγή ημερ/νιών γέννησης φοιτητών ===");
 
         for (int i = 0; i < students.length; i++) {
-            if (i == 5 || i == 6 || i == 7) {
+            /*if (i == 5 || i == 6 || i == 7) {
                 Date dateOfBirth = inHmeromGennisis();
                 students[i].setHmeromGennisis(dateOfBirth);
-            }
+            }*/
             System.out.println(students[i]);
         }
 
@@ -150,48 +150,17 @@ public class OOPErg004 {
         Scanner scan = new Scanner(System.in);
         System.out.println("εισαγετε αριθμο μητρωου για αναζητηση: ");
         String AM = scan.nextLine();
-        Foititis[] sortedStudents = sortStudents(students);
+        Arrays.sort(students);
+        int idx = binSearch(students, AM, 0, students.length);
+        System.out.println(students[idx]);
     }
 
-    public static Foititis[] sortStudents(Foititis[] students) {
-        int f = Integer.parseInt(students[0].getAM()); //TODO: idk if this is correct
-        int l = Integer.parseInt(students[students.length - 1].getAM()); //TODO: idk if this is correct
-        Foititis[] results = mSortStudents(students, f, l);
-        for (int i = 0; i < results.length; i++) { //TODO: comment out printing loop when done debugging
-            System.out.println(results[i]);
-        }
-        return results;
-    }
-
-    //TODO: probably wrong
-    public static Foititis[] mSortStudents(Foititis[] students, int f, int l) {
-        if (f == l) {
-            return students;
-        }
-        int mid = f + l / 2;
-        Foititis[] sortedhalf1 = mSortStudents(students, f, mid);
-        Foititis[] sortedhalf2 = mSortStudents(students, mid + 1, l);
-        return mergeStudents(sortedhalf1, sortedhalf2);
-    }
-
-    public static Foititis[] mergeStudents(Foititis[] f1, Foititis[] f2) {
-        int l1 = f1.length;
-        int l2 = f2.length;
-        Foititis[] results = new Foititis[l1 + l2];
-        System.arraycopy(f1, 0, results, 0, l1);
-        System.arraycopy(f2, 0, results, l1, l2);
-        return results;
-    }
-
-    //TODO: 99% chance it's wrong
-    public static int binSearch(Foititis[] arr, Foititis key, Foititis left, Foititis right) {
-        int mid = -1;
+    public static int binSearch(Foititis[] arr, String key, int l, int r) {
+        int mid;
         int pos = -1;
-        int l = Integer.parseInt(left.getAM());
-        int r = Integer.parseInt(right.getAM());
-        int k = Integer.parseInt(key.getAM());
+        long k = Long.parseLong(key);
 
-        int arrmid = Integer.parseInt(arr[mid].getAM());
+        int arrmid;
 
         while (pos == -1 && l <= r) {
             mid = (l + r) / 2;

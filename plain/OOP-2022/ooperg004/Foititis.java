@@ -3,13 +3,18 @@ package ooperg004;
 import java.text.*;
 import java.util.*;
 
-public class Foititis {
+public class Foititis implements Comparable<Foititis> {
 
     private static int AA = 0;
     private String AM;
     private String onomatEpwnymo;
     private Date hmeromGennisis;
     private int etosEisagwgis;
+
+    @Override
+    public int compareTo(Foititis other) {
+        return Integer.compare(Integer.parseInt(this.AM), Integer.parseInt(other.AM));
+    }
 
     public Foititis() {
     }
